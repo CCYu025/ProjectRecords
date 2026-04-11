@@ -53,17 +53,6 @@
       color: #1A1A1A;
     }
 
-    /* ── Info bar ── */
-    .info-bar {
-      background: #FDFAF6;
-      border-bottom: 1px solid #E8E0D4;
-      padding: 12px 40px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
     /* Status badges */
     .badge {
       display: inline-flex;
@@ -82,16 +71,6 @@
     }
     .badge-active { background: #FEF3C7; color: #92400E; }
     .badge-active::before { background: #F59E0B; }
-
-    .info-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 1rem;
-      color: #7A6E63;
-    }
-    .info-item .icon { font-size: 1rem; }
-    .info-item strong { color: #2D2620; }
 
     /* ── Month tabs ── */
     .month-tabs {
@@ -365,7 +344,6 @@
 
     @media (max-width: 600px) {
       header { padding: 14px 20px; }
-      .info-bar { padding: 12px 20px; }
       .month-tabs { padding: 0 20px; }
       main { padding: 28px 20px; }
     }
@@ -378,19 +356,8 @@
       <a class="back-link" href="../index.html">← 返回目錄</a>
       <div class="header-divider"></div>
       <h1>大陸蘇州機械手臂</h1>
+      <span class="badge badge-active" style="margin-left:auto">進行中</span>
     </header>
-
-    <div class="info-bar">
-      <span class="badge badge-active">進行中</span>
-      <div class="info-item">
-        <span class="icon">📅</span>
-        <span>開始日期：<strong>2026/04/10</strong></span>
-      </div>
-      <div class="info-item">
-        <span class="icon">📍</span>
-        <span>地點：<strong>毅豐橡膠</strong></span>
-      </div>
-    </div>
 
     <div class="month-tabs">
       <button class="month-tab active" data-month="2026-04">2026 / 04</button>

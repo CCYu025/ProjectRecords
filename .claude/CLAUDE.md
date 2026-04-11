@@ -84,9 +84,8 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 
 ## 個別專案頁規範
 
-- Sticky Header：返回目錄連結 + 專案名稱（`position: sticky; top: 0; z-index: 100`）
-- Info bar：狀態標籤、開始日期、地點（sticky header 一部分）
-- 月份 Tab 列：底線 active 樣式，JS 切換月份顯示（sticky header 最底層）
+- Sticky Header：返回目錄連結 + 專案名稱 + 狀態 badge 靠右（`position: sticky; top: 0; z-index: 100`）
+- 月份 Tab 列：底線 active 樣式，JS 切換月份顯示（sticky header 第二層）
 - 橫向日期膠囊列：< 1080px 時取代側邊索引，`overflow-x: auto`（sticky header 內）
 - 側邊日期索引：`position: fixed`，> 1080px 時顯示，捲動自動 highlight
 - 內容：以 `.date-group` 為單位，日期標題在上，task-item 卡片堆疊於下
@@ -221,3 +220,4 @@ node {專案名稱}/generate_pdf.js
 - 動態 scroll-margin-top：JS 量測 `.sticky-header` 實際高度 + 16px，確保錨點定位準確
 - 導航鎖 `isNavigating`：點擊導航後鎖定 900ms，避免 Observer 與錨點捲動衝突
 - `scrollIntoView` 加 `block: 'nearest'`：防止膠囊 scrollIntoView 影響頁面垂直捲動
+- 移除 info-bar（開始日期、地點），badge 移入 header 右側（`margin-left: auto`），全裝置一致
