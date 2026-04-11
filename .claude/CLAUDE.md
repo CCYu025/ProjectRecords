@@ -15,7 +15,8 @@
 ```
 [進行中]專案紀錄/
 ├── index.html                  ← 主頁目錄（所有專案卡片列表）
-├── CLAUDE.md                   ← 本檔案
+├── .claude/
+│   └── CLAUDE.md               ← 本檔案
 └── {專案名稱}/
     ├── index.html              ← 個別專案頁（時間軸格式）
     ├── 草稿/                   ← Word 草稿歸檔（生成 HTML 後移入）
@@ -114,7 +115,7 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 
 | 專案名稱 | 狀態 | 地點 | 最新更新 |
 |----------|------|------|----------|
-| 大陸蘇州機械手臂 | 進行中 | 毅豐橡膠 | 2026/04/10 |
+| 大陸蘇州機械手臂 | 進行中 | 毅豐橡膠 | 2026/04/11 |
 
 ---
 
@@ -127,10 +128,20 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 
 ---
 
-## 本次 Session 變更紀錄（2026/04/10）
+## Session 變更紀錄
 
+### 2026/04/10
 - 建立整體 HTML 系統架構（主頁 + 第一個專案頁）
 - 套用暖底藍調配色風格（參考 Anthropic 官網）
 - 加入照片 Lightbox 彈窗功能（純 JS，離線可用）
 - 建立 `草稿/` 資料夾規範，將 `20260410.docx` 歸檔
 - 大陸蘇州機械手臂：地點更新為「毅豐橡膠」，摘要更新為當前組裝進度
+
+### 2026/04/11
+- 新增 04/11 時間軸節點：2號、3號配電箱初步裝配、RB-1底架初步裝配
+- 04/10 描述修飾：卸貨定位、配電箱初步裝配作業
+- 全站「電控箱」統一更名為「配電箱」
+- 區塊標題「工程進度紀錄」改為「專案進度紀錄」
+- CLAUDE.md 移至 `.claude/` 資料夾
+- 推送至 GitHub：CCYu025/ProjectRecords，啟用 GitHub Pages
+- GitHub Pages 網址：https://ccyu025.github.io/ProjectRecords/
