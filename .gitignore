@@ -1,0 +1,10 @@
+# Node.js 依賴
+node_modules/
+package-lock.json
+
+# PDF 輸出模組
+**/generate_pdf.js
+package.json
+
+# 產生的 PDF 檔案
+**/*.pdf

@@ -15,10 +15,13 @@
 ```
 [進行中]專案紀錄/
 ├── index.html                  ← 主頁目錄（所有專案卡片列表）
+├── package.json                ← Node.js 依賴（playwright）
+├── node_modules/               ← npm install 產生，勿手動修改
 ├── .claude/
 │   └── CLAUDE.md               ← 本檔案
 └── {專案名稱}/
-    ├── index.html              ← 個別專案頁（時間軸格式）
+    ├── index.html              ← 個別專案頁（時間軸格式，純網頁無列印 CSS）
+    ├── generate_pdf.js         ← PDF 輸出模組（獨立，與 index.html 分離）
     ├── 草稿/                   ← Word 草稿歸檔（生成 HTML 後移入）
     │   └── YYYYMMDD.docx
     └── 照片/
@@ -126,6 +129,20 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 3. 將 Word 草稿移入 `草稿/` 子資料夾
 4. 更新主頁 `index.html` 的卡片（新增或修改摘要/日期/狀態）
 
+### PDF 輸出流程
+
+每個專案資料夾內有獨立的 `generate_pdf.js`，執行方式：
+
+```bash
+node {專案名稱}/generate_pdf.js
+```
+
+- 輸出格式：A4 橫向，無邊距
+- 版面：每張 task-item 一頁，藍色全寬 header bar + 左欄（標題／日期）35% + 右欄（圖片）65%
+- 自我驗證：輸出前自動檢查首頁空白、卡片高度、圖片渲染，最多重試 3 次
+- `index.html` 不含任何列印 CSS，網頁與 PDF 完全分離
+- 依賴 playwright，需先於專案根目錄執行 `npm install`
+
 ---
 
 ## Session 變更紀錄
@@ -152,3 +169,14 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
   - 卡片 padding 24px → 28px，間距 20px → 24px
   - 時間軸日期欄加粗、欄寬 118px → 130px
   - 加入 `@media print` 列印樣式（橫向兩欄、隱藏 Lightbox）
+
+### 2026/04/11（PDF 模組）
+- 建立 PDF 輸出系統：`大陸蘇州機械手臂/generate_pdf.js`
+  - Playwright headless Chromium 產生 A4 橫向 PDF
+  - 版面：藍色全寬 header bar + 左欄標題 35% / 右欄圖片 65%
+  - 每張 task-item 獨佔一頁，作業日期 badge 顯示於標題左欄下方
+  - 自我驗證迴圈（最多 3 次重試）：檢查首頁空白、卡片高度、圖片渲染
+- 移除 `index.html` 的 `@media print` CSS，網頁與 PDF 邏輯完全分離
+- 建立專案根目錄 `package.json`，宣告 playwright 依賴（`npm install` 後可用）
+- PDF 輸出指令：`node 大陸蘇州機械手臂/generate_pdf.js`
+- 建立 `.gitignore`：排除 `generate_pdf.js`、`package.json`、`node_modules/`、`*.pdf`，PDF 模組不推送至 GitHub
