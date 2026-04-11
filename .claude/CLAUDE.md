@@ -20,7 +20,7 @@
 ├── .claude/
 │   └── CLAUDE.md               ← 本檔案
 └── {專案名稱}/
-    ├── index.html              ← 個別專案頁（時間軸格式，純網頁無列印 CSS）
+    ├── index.html              ← 個別專案頁（月份Tab + 日期群組卡片格式，純網頁無列印 CSS）
     ├── generate_pdf.js         ← PDF 輸出模組（獨立，與 index.html 分離）
     ├── 草稿/                   ← Word 草稿歸檔（生成 HTML 後移入）
     │   └── YYYYMMDD.docx
@@ -43,7 +43,7 @@
 | 主文字 | `#1A1A1A` |
 | 輔助文字 | `#7A6E63` |
 | 摘要 / 次要文字 | `#5C4E43` |
-| 強調藍（按鈕、連結、時間軸點） | `#2563EB` |
+| 強調藍（按鈕、連結、active 導航） | `#2563EB` |
 | 進行中標籤 | bg `#FEF3C7` / text `#92400E` |
 | 完成標籤 | bg `#D1FAE5` / text `#065F46` |
 | 暫停標籤 | bg `#FEE2E2` / text `#991B1B` |
@@ -84,30 +84,61 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 
 ## 個別專案頁規範
 
-- Header：返回目錄連結 `../index.html` + 專案名稱
-- Info bar：狀態標籤、開始日期、地點
-- 時間軸：垂直線 + 左側日期 + 右側 task-item 卡片
+- Sticky Header：返回目錄連結 + 專案名稱（`position: sticky; top: 0; z-index: 100`）
+- Info bar：狀態標籤、開始日期、地點（sticky header 一部分）
+- 月份 Tab 列：底線 active 樣式，JS 切換月份顯示（sticky header 最底層）
+- 橫向日期膠囊列：< 1080px 時取代側邊索引，`overflow-x: auto`（sticky header 內）
+- 側邊日期索引：`position: fixed`，> 1080px 時顯示，捲動自動 highlight
+- 內容：以 `.date-group` 為單位，日期標題在上，task-item 卡片堆疊於下
 - 照片支援 Lightbox（點擊放大、Esc 關閉、← → 切換、底部顯示工作項目名稱）
 
-### 新增時間軸節點範本
+### 新增日期紀錄範本
 
+**① 側邊索引 + 膠囊列各加一行（`data-month` 對應所屬月份）：**
 ```html
-<div class="timeline-entry">
-  <div class="entry-date">
-    <span class="date-text">YYYY<br>MM/DD</span>
-  </div>
-  <div class="entry-dot"></div>
-  <div class="entry-content">
+<!-- 側邊索引（.date-index 內） -->
+<a class="date-index-item" data-month="2026-04" href="#d20260412">04/12</a>
 
-    <div class="task-item">
-      <div class="task-title">{工作項目名稱}</div>
-      <div class="task-images">
-        <div class="img-wrapper">
-          <img src="照片/YYYYMMDD/{檔名}.jpg" alt="{工作項目名稱}">
-        </div>
+<!-- 橫向膠囊列（.date-chips 內） -->
+<a class="date-chip" data-month="2026-04" href="#d20260412">04/12</a>
+```
+
+**② 對應月份的 `.month-section` 內加 `.date-group`：**
+```html
+<div class="date-group" id="d20260412">
+  <div class="date-heading">2026 / 04 / 12</div>
+
+  <div class="task-item">
+    <div class="task-title">{工作項目名稱}</div>
+    <div class="task-images">
+      <div class="img-wrapper">
+        <img src="照片/20260412/{檔名}.jpg" alt="{工作項目名稱}">
       </div>
     </div>
+  </div>
 
+</div>
+```
+
+**錨點 ID 規則：** `d` + 日期數字，例如 `2026/04/12` → `id="d20260412"`
+
+### 新增月份範本
+
+```html
+<!-- sticky-header 月份 Tab 列加一顆按鈕 -->
+<button class="month-tab" data-month="2026-05">2026 / 05</button>
+
+<!-- 側邊索引加該月日期項目 -->
+<a class="date-index-item" data-month="2026-05" href="#d20260503">05/03</a>
+
+<!-- 橫向膠囊列加該月日期項目 -->
+<a class="date-chip" data-month="2026-05" href="#d20260503">05/03</a>
+
+<!-- main 內加新的 month-section（預設不顯示） -->
+<div class="month-section" data-month="2026-05" style="display:none">
+  <div class="date-group" id="d20260503">
+    <div class="date-heading">2026 / 05 / 03</div>
+    ...
   </div>
 </div>
 ```
@@ -180,3 +211,13 @@ node {專案名稱}/generate_pdf.js
 - 建立專案根目錄 `package.json`，宣告 playwright 依賴（`npm install` 後可用）
 - PDF 輸出指令：`node 大陸蘇州機械手臂/generate_pdf.js`
 - 建立 `.gitignore`：排除 `generate_pdf.js`、`package.json`、`node_modules/`、`*.pdf`，PDF 模組不推送至 GitHub
+
+### 2026/04/11（版面重構）
+- 頂部欄位固定：`header` + `info-bar` 包入 `.sticky-header`（`position: sticky; top: 0; z-index: 100`）
+- 版面全面重構，移除時間軸（垂直線、左側日期欄、藍點），改為日期群組卡片格式
+- 新增月份 Tab 列（`position: sticky` 內，JS 切換月份 show/hide `.month-section`）
+- 新增側邊日期索引（`position: fixed`，> 1080px 顯示，IntersectionObserver 自動 highlight）
+- 新增橫向日期膠囊列（`overflow-x: auto`，< 1080px 替代側邊索引）
+- 動態 scroll-margin-top：JS 量測 `.sticky-header` 實際高度 + 16px，確保錨點定位準確
+- 導航鎖 `isNavigating`：點擊導航後鎖定 900ms，避免 Observer 與錨點捲動衝突
+- `scrollIntoView` 加 `block: 'nearest'`：防止膠囊 scrollIntoView 影響頁面垂直捲動

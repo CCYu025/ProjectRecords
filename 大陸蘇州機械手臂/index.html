@@ -15,6 +15,13 @@
       line-height: 1.8;
     }
 
+    /* ── Sticky wrapper ── */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
     /* ── Header ── */
     header {
       background: #FDFAF6;
@@ -86,6 +93,100 @@
     .info-item .icon { font-size: 1rem; }
     .info-item strong { color: #2D2620; }
 
+    /* ── Month tabs ── */
+    .month-tabs {
+      background: #FDFAF6;
+      border-bottom: 2px solid #E8E0D4;
+      padding: 0 40px;
+      display: flex;
+      gap: 4px;
+    }
+    .month-tab {
+      padding: 10px 18px;
+      border: none;
+      background: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #7A6E63;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.15s;
+    }
+    .month-tab.active {
+      color: #2563EB;
+      border-bottom-color: #2563EB;
+    }
+    .month-tab:hover:not(.active) { color: #1A1A1A; }
+
+    /* ── Side date index ── */
+    .date-index {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      left: max(12px, calc(50% - 430px - 80px));
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 50;
+    }
+    .date-index-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #A89E93;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .date-index-item {
+      display: block;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #7A6E63;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .date-index-item:hover { background: #E8E0D4; color: #1A1A1A; }
+    .date-index-item.active { background: #2563EB; color: #fff; }
+
+    @media (max-width: 1080px) { .date-index { display: none; } }
+
+    /* ── 橫向日期膠囊列（窄螢幕替代側邊索引）── */
+    .date-chips {
+      display: none;
+      background: #FDFAF6;
+      border-bottom: 1px solid #E8E0D4;
+      padding: 8px 16px;
+      gap: 8px;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .date-chips::-webkit-scrollbar { display: none; }
+    @media (max-width: 1080px) { .date-chips { display: flex; } }
+
+    .date-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #7A6E63;
+      text-decoration: none;
+      background: #F0EBE3;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .date-chip:hover { background: #E8E0D4; color: #1A1A1A; }
+    .date-chip.active { background: #2563EB; color: #fff; }
+
     /* ── Main content ── */
     main {
       max-width: 860px;
@@ -102,66 +203,23 @@
       margin-bottom: 28px;
     }
 
-    /* ── Timeline ── */
-    .timeline {
-      position: relative;
-      padding-left: 0;
-    }
-
-    /* Vertical line */
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 130px;
-      top: 8px;
-      bottom: 8px;
-      width: 2px;
-      background: #E8E0D4;
-    }
-
-    .timeline-entry {
-      display: flex;
-      gap: 0;
+    /* ── Date groups ── */
+    .date-group {
       margin-bottom: 40px;
     }
-    .timeline-entry:last-child { margin-bottom: 0; }
+    .date-group:last-child { margin-bottom: 0; }
 
-    /* Date column */
-    .entry-date {
-      width: 130px;
-      flex-shrink: 0;
-      padding-right: 24px;
-      text-align: right;
-      padding-top: 4px;
-    }
-    .entry-date .date-text {
-      font-size: 1rem;
+    .date-heading {
+      font-size: 0.875rem;
       font-weight: 700;
-      color: #5C4E43;
-      line-height: 1.4;
+      color: #7A6E63;
+      letter-spacing: 0.04em;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #E8E0D4;
+      margin-bottom: 16px;
     }
 
-    /* Dot */
-    .entry-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #2563EB;
-      border: 3px solid #F5F0E8;
-      box-shadow: 0 0 0 2px #2563EB;
-      flex-shrink: 0;
-      margin-top: 3px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Content column */
-    .entry-content {
-      flex: 1;
-      padding-left: 20px;
-    }
-
-    /* Task items within an entry */
+    /* ── Task items ── */
     .task-item {
       background: #FDFAF6;
       border: 1px solid #E8E0D4;
@@ -193,7 +251,7 @@
       font-size: 15px;
       color: #5C4E43;
       line-height: 1.7;
-      margin: -8px 0 14px;
+      margin: 4px 0 14px;
     }
 
     .task-images {
@@ -308,117 +366,124 @@
     @media (max-width: 600px) {
       header { padding: 14px 20px; }
       .info-bar { padding: 12px 20px; }
+      .month-tabs { padding: 0 20px; }
       main { padding: 28px 20px; }
-      .timeline::before { left: 90px; }
-      .entry-date { width: 90px; }
-      .entry-date .date-text { font-size: 0.72rem; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <a class="back-link" href="../index.html">← 返回目錄</a>
-    <div class="header-divider"></div>
-    <h1>大陸蘇州機械手臂</h1>
-  </header>
+  <div class="sticky-header">
+    <header>
+      <a class="back-link" href="../index.html">← 返回目錄</a>
+      <div class="header-divider"></div>
+      <h1>大陸蘇州機械手臂</h1>
+    </header>
 
-  <div class="info-bar">
-    <span class="badge badge-active">進行中</span>
-    <div class="info-item">
-      <span class="icon">📅</span>
-      <span>開始日期：<strong>2026/04/10</strong></span>
+    <div class="info-bar">
+      <span class="badge badge-active">進行中</span>
+      <div class="info-item">
+        <span class="icon">📅</span>
+        <span>開始日期：<strong>2026/04/10</strong></span>
+      </div>
+      <div class="info-item">
+        <span class="icon">📍</span>
+        <span>地點：<strong>毅豐橡膠</strong></span>
+      </div>
     </div>
-    <div class="info-item">
-      <span class="icon">📍</span>
-      <span>地點：<strong>毅豐橡膠</strong></span>
+
+    <div class="month-tabs">
+      <button class="month-tab active" data-month="2026-04">2026 / 04</button>
+      <!-- 新增月份時在此加 button，data-month="2026-05" -->
+    </div>
+
+    <div class="date-chips">
+      <a class="date-chip active" data-month="2026-04" href="#d20260410">04/10</a>
+      <a class="date-chip" data-month="2026-04" href="#d20260411">04/11</a>
+      <!-- 新增日期時在此加 a，data-month 對應月份 -->
     </div>
   </div>
 
+  <!-- 側邊日期索引 -->
+  <nav class="date-index" aria-label="日期導覽">
+    <div class="date-index-label">日期</div>
+    <a class="date-index-item active" data-month="2026-04" href="#d20260410">04/10</a>
+    <a class="date-index-item" data-month="2026-04" href="#d20260411">04/11</a>
+    <!-- 新增日期時在此加 a，data-month 對應月份 -->
+  </nav>
+
   <main>
-    <p class="section-title">專案進度紀錄</p>
 
-    <div class="timeline">
+    <!-- ── 2026/04 ── -->
+    <div class="month-section" data-month="2026-04">
 
-      <!-- ── 2026/04/10 ── -->
-      <div class="timeline-entry">
-        <div class="entry-date">
-          <span class="date-text">2026<br>04/10</span>
-        </div>
-        <div class="entry-dot"></div>
-        <div class="entry-content">
+      <!-- 2026/04/10 -->
+      <div class="date-group" id="d20260410">
+        <div class="date-heading">2026 / 04 / 10</div>
 
-          <!-- Task 1 -->
-          <div class="task-item">
-            <div class="task-title">機械手臂設備抵達廠內，完成卸貨定位</div>
-            <div class="task-images">
-              <div class="img-wrapper">
-                <img src="照片/20260410/S__25829379.jpg" alt="機械手臂設備抵達廠內">
-              </div>
+        <div class="task-item">
+          <div class="task-title">機械手臂設備抵達廠內，完成卸貨定位</div>
+          <div class="task-images">
+            <div class="img-wrapper">
+              <img src="照片/20260410/S__25829379.jpg" alt="機械手臂設備抵達廠內">
             </div>
           </div>
+        </div>
 
-          <!-- Task 2 -->
-          <div class="task-item">
-            <div class="task-title">配電箱初步裝配作業</div>
-            <div class="task-images">
-              <div class="img-wrapper">
-                <img src="照片/20260410/S__25829380.jpg" alt="配電箱初步裝配">
-              </div>
+        <div class="task-item">
+          <div class="task-title">配電箱初步裝配作業</div>
+          <div class="task-images">
+            <div class="img-wrapper">
+              <img src="照片/20260410/S__25829380.jpg" alt="配電箱初步裝配">
             </div>
           </div>
-
         </div>
+
       </div>
 
-      <!-- ── 2026/04/11 ── -->
-      <div class="timeline-entry">
-        <div class="entry-date">
-          <span class="date-text">2026<br>04/11</span>
+      <!-- 2026/04/11 -->
+      <div class="date-group" id="d20260411">
+        <div class="date-heading">2026 / 04 / 11</div>
+
+        <div class="task-item">
+          <div class="task-title">2號、3號配電箱初步裝配</div>
+          <div class="task-images">
+            <div class="img-wrapper">
+              <img src="照片/20260411/S__25878531_0.jpg" alt="2號、3號配電箱初步裝配">
+            </div>
+          </div>
         </div>
-        <div class="entry-dot"></div>
-        <div class="entry-content">
 
-          <!-- Task 1 -->
-          <div class="task-item">
-            <div class="task-title">2號、3號配電箱初步裝配</div>
-            <div class="task-images">
-              <div class="img-wrapper">
-                <img src="照片/20260411/S__25878531_0.jpg" alt="2號、3號配電箱初步裝配">
-              </div>
+        <div class="task-item">
+          <div class="task-title">RB-1底架初步裝配</div>
+          <div class="task-images">
+            <div class="img-wrapper">
+              <img src="照片/20260411/S__25878532_0.jpg" alt="RB-1底架初步裝配">
             </div>
           </div>
-
-          <!-- Task 2 -->
-          <div class="task-item">
-            <div class="task-title">RB-1底架初步裝配</div>
-            <div class="task-images">
-              <div class="img-wrapper">
-                <img src="照片/20260411/S__25878532_0.jpg" alt="RB-1底架初步裝配">
-              </div>
-            </div>
-          </div>
-
-          <!-- Task 3 -->
-          <div class="task-item">
-            <div class="task-title">RB-2 底架初步組立</div>
-            <div class="task-desc">完成 RB-2 機器手臂與軌道台座的初步組立。</div>
-            <div class="task-images">
-              <div class="img-wrapper">
-                <img src="照片/20260411/S__25911299_0.jpg" alt="RB-2 底架初步組立">
-              </div>
-              <div class="img-wrapper">
-                <img src="照片/20260411/S__25911300_0.jpg" alt="RB-2 底架初步組立">
-              </div>
-            </div>
-          </div>
-
         </div>
+
+        <div class="task-item">
+          <div class="task-title">RB-2 底架初步組立</div>
+          <div class="task-desc">完成 RB-2 機器手臂與軌道台座的初步組立。</div>
+          <div class="task-images">
+            <div class="img-wrapper">
+              <img src="照片/20260411/S__25911299_0.jpg" alt="RB-2 底架初步組立">
+            </div>
+            <div class="img-wrapper">
+              <img src="照片/20260411/S__25911300_0.jpg" alt="RB-2 底架初步組立">
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <!-- 新增日期紀錄時在此往下加 timeline-entry -->
+      <!-- 新增日期群組時在此往下加 date-group -->
 
     </div>
+
+    <!-- 新增月份時在此往下加 month-section，data-month="2026-05"，預設 display:none -->
+
   </main>
 
   <!-- Lightbox -->
@@ -432,10 +497,79 @@
   </div>
 
   <script>
-    // 收集所有可點擊照片
-    const imgs = Array.from(document.querySelectorAll('.task-images img'));
-    let current = 0;
+    // ── 動態設定 scroll-margin-top ──
+    function updateScrollMargin() {
+      const h = document.querySelector('.sticky-header').offsetHeight;
+      document.querySelectorAll('.date-group').forEach(g => {
+        g.style.scrollMarginTop = (h + 16) + 'px';
+      });
+    }
+    updateScrollMargin();
+    window.addEventListener('resize', updateScrollMargin);
 
+    // ── 月份切換 ──
+    const tabs       = document.querySelectorAll('.month-tab');
+    const sections   = document.querySelectorAll('.month-section');
+    const indexItems = document.querySelectorAll('.date-index-item');
+    const chipItems  = document.querySelectorAll('.date-chip');
+
+    // 同步更新側邊索引與橫向膠囊列
+    function syncNav(month, activeHref) {
+      [indexItems, chipItems].forEach(group => {
+        group.forEach(item => {
+          const belongs = item.dataset.month === month;
+          item.style.display = belongs ? '' : 'none';
+          item.classList.toggle('active', belongs && item.getAttribute('href') === activeHref);
+        });
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const month = tab.dataset.month;
+        tabs.forEach(t => t.classList.toggle('active', t === tab));
+        sections.forEach(s => {
+          s.style.display = s.dataset.month === month ? '' : 'none';
+        });
+        const firstHref = document.querySelector(`.date-index-item[data-month="${month}"]`)
+                          ?.getAttribute('href') || '';
+        syncNav(month, firstHref);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    // ── 導航鎖：點擊時立即更新顏色，再封鎖 Observer 避免捲動衝突 ──
+    let isNavigating = false;
+    function lockNav(href, month) {
+      syncNav(month, href);   // 先更新顏色
+      isNavigating = true;    // 再封鎖 Observer
+      setTimeout(() => { isNavigating = false; }, 900);
+    }
+    indexItems.forEach(item => item.addEventListener('click', () =>
+      lockNav(item.getAttribute('href'), item.dataset.month)));
+    chipItems.forEach(item => item.addEventListener('click', () =>
+      lockNav(item.getAttribute('href'), item.dataset.month)));
+
+    // ── 捲動時同步高亮側邊索引與膠囊列 ──
+    const dateGroups = document.querySelectorAll('.date-group[id]');
+    const activeMoth = () => document.querySelector('.month-tab.active')?.dataset.month || '';
+    const observer = new IntersectionObserver(entries => {
+      if (isNavigating) return;
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const href = `#${entry.target.id}`;
+          syncNav(activeMoth(), href);
+          // 橫向膠囊列：block:'nearest' 確保只做橫向捲動，不影響頁面垂直位置
+          const activeChip = document.querySelector(`.date-chip[href="${href}"]`);
+          if (activeChip) activeChip.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    dateGroups.forEach(g => observer.observe(g));
+
+    // ── Lightbox ──
+    const imgs     = Array.from(document.querySelectorAll('.task-images img'));
+    let current    = 0;
     const lb       = document.getElementById('lightbox');
     const lbImg    = document.getElementById('lightbox-img');
     const lbCap    = document.getElementById('lightbox-caption');
@@ -449,7 +583,6 @@
       const img = imgs[current];
       lbImg.src = img.src;
       lbImg.alt = img.alt;
-      // 取上層 task-title 文字作為說明
       const taskItem = img.closest('.task-item');
       const titleEl  = taskItem ? taskItem.querySelector('.task-title') : null;
       lbCap.textContent = titleEl ? titleEl.textContent.trim() : '';
@@ -459,31 +592,23 @@
       lb.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
-
     function close() {
       lb.classList.remove('open');
       document.body.style.overflow = '';
     }
-
     function prev() { if (current > 0) open(current - 1); }
     function next() { if (current < imgs.length - 1) open(current + 1); }
 
-    // 綁定點擊事件
     imgs.forEach((img, i) => img.addEventListener('click', () => open(i)));
-
     lbClose.addEventListener('click', close);
     lbPrev.addEventListener('click', prev);
     lbNext.addEventListener('click', next);
-
-    // 點擊遮罩關閉（點到圖片本身不關閉）
     lb.addEventListener('click', e => { if (e.target === lb) close(); });
-
-    // 鍵盤操作
     document.addEventListener('keydown', e => {
       if (!lb.classList.contains('open')) return;
-      if (e.key === 'Escape')      close();
-      if (e.key === 'ArrowLeft')   prev();
-      if (e.key === 'ArrowRight')  next();
+      if (e.key === 'Escape')     close();
+      if (e.key === 'ArrowLeft')  prev();
+      if (e.key === 'ArrowRight') next();
     });
   </script>
 
