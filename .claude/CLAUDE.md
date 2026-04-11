@@ -145,3 +145,10 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 - CLAUDE.md 移至 `.claude/` 資料夾
 - 推送至 GitHub：CCYu025/ProjectRecords，啟用 GitHub Pages
 - GitHub Pages 網址：https://ccyu025.github.io/ProjectRecords/
+- 字體無障礙優化（針對年長主管閱覽）：
+  - 全站行高 1.6 → 1.8
+  - 最小字體提升至 14px 以上，多數元素放大至 16–18px
+  - 狀態標籤圓點 6px → 8px
+  - 卡片 padding 24px → 28px，間距 20px → 24px
+  - 時間軸日期欄加粗、欄寬 118px → 130px
+  - 加入 `@media print` 列印樣式（橫向兩欄、隱藏 Lightbox）
