@@ -5,5 +5,5 @@ var 大陸蘇州機械手臂 = {
   location: '毅豐橡膠',
   startDate: '2026-03-30',
   endDate: '2026-05-11',
-  lastUpdate: '2026/04/12'
+  lastUpdate: '2026/04/11'
 };

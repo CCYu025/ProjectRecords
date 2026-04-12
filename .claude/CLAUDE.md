@@ -259,6 +259,10 @@ sticky header 右上角使用 `header-phase` 元素取代舊的 `badge`：
 
 只需編輯 `{專案名稱}/project-info.js`，修改 `currentPhase` 數字，主頁與內頁自動同步。
 
+### 更新最新紀錄日期
+
+新增 date-group 到內頁時，同步更新 `project-info.js` 的 `lastUpdate` 為該日期，主頁卡片即自動反映最新施工日期。
+
 ### PDF 輸出
 
 每個專案資料夾內有獨立的 `generate_pdf.js`，依賴 playwright（需先執行 `npm install`）。
