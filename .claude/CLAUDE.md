@@ -84,12 +84,12 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 
 ## 個別專案頁規範
 
-- Sticky Header：返回目錄連結 + 專案名稱 + 狀態 badge 靠右（`position: sticky; top: 0; z-index: 100`）
+- Sticky Header：SVG chevron 返回連結 + 專案名稱 + 狀態 badge 靠右（`position: sticky; top: 0; z-index: 100`）
 - 月份 Tab 列：底線 active 樣式，JS 切換月份顯示（sticky header 第二層）
 - 橫向日期膠囊列：< 1080px 時取代側邊索引，`overflow-x: auto`（sticky header 內）
 - 側邊日期索引：`position: fixed`，> 1080px 時顯示，捲動自動 highlight
 - 內容：以 `.date-group` 為單位，日期標題在上，task-item 卡片堆疊於下
-- 照片支援 Lightbox（點擊放大、Esc 關閉、← → 切換、底部顯示工作項目名稱）
+- 照片支援 Lightbox（點擊圖片或背景關閉、Esc 關閉、← → 切換、底部顯示工作項目名稱）
 
 ### 用詞規範
 
@@ -102,7 +102,7 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 ### task-item 標題與描述規範
 
 - 標題：精簡名詞式，英文縮寫與中文之間加空格（如 `RB-1 底架初步裝配`）
-- 描述：一句話，動詞開頭，句末加「作業」（如 `完成 RB-1 機械手臂底架的初步裝配作業。`）
+- 描述：一句話，動詞開頭，句末含句號（如 `完成 RB-1 機械手臂底架的初步裝配作業。`）
 - 使用 `.task-desc` 元素，置於 `.task-title` 下方、`.task-images` 上方
 
 ```html
@@ -171,7 +171,7 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 
 | 專案名稱 | 狀態 | 地點 | 最新更新 |
 |----------|------|------|----------|
-| 大陸蘇州機械手臂 | 進行中 | 毅豐橡膠 | 2026/04/11 |
+| 大陸蘇州機械手臂 | 進行中 | 毅豐橡膠 | 2026/04/12 |
 
 ---
 
@@ -182,79 +182,12 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 3. 將 Word 草稿移入 `草稿/` 子資料夾
 4. 更新主頁 `index.html` 的卡片（新增或修改摘要/日期/狀態）
 
-### PDF 輸出流程
+### PDF 輸出
 
-每個專案資料夾內有獨立的 `generate_pdf.js`，執行方式：
+每個專案資料夾內有獨立的 `generate_pdf.js`，依賴 playwright（需先執行 `npm install`）。
 
 ```bash
 node {專案名稱}/generate_pdf.js
 ```
 
-- 輸出格式：A4 橫向，無邊距
-- 版面：每張 task-item 一頁，藍色全寬 header bar + 左欄（標題／日期）35% + 右欄（圖片）65%
-- 自我驗證：輸出前自動檢查首頁空白、卡片高度、圖片渲染，最多重試 3 次
-- `index.html` 不含任何列印 CSS，網頁與 PDF 完全分離
-- 依賴 playwright，需先於專案根目錄執行 `npm install`
-
----
-
-## Session 變更紀錄
-
-### 2026/04/10
-- 建立整體 HTML 系統架構（主頁 + 第一個專案頁）
-- 套用暖底藍調配色風格（參考 Anthropic 官網）
-- 加入照片 Lightbox 彈窗功能（純 JS，離線可用）
-- 建立 `草稿/` 資料夾規範，將 `20260410.docx` 歸檔
-- 大陸蘇州機械手臂：地點更新為「毅豐橡膠」，摘要更新為當前組裝進度
-
-### 2026/04/11
-- 新增 04/11 時間軸節點：2號、3號配電箱初步裝配、RB-1底架初步裝配
-- 04/10 描述修飾：卸貨定位、配電箱初步裝配作業
-- 全站「電控箱」統一更名為「配電箱」
-- 區塊標題「工程進度紀錄」改為「專案進度紀錄」
-- CLAUDE.md 移至 `.claude/` 資料夾
-- 推送至 GitHub：CCYu025/ProjectRecords，啟用 GitHub Pages
-- GitHub Pages 網址：https://ccyu025.github.io/ProjectRecords/
-- 字體無障礙優化（針對年長主管閱覽）：
-  - 全站行高 1.6 → 1.8
-  - 最小字體提升至 14px 以上，多數元素放大至 16–18px
-  - 狀態標籤圓點 6px → 8px
-  - 卡片 padding 24px → 28px，間距 20px → 24px
-  - 時間軸日期欄加粗、欄寬 118px → 130px
-  - 加入 `@media print` 列印樣式（橫向兩欄、隱藏 Lightbox）
-
-### 2026/04/11（PDF 模組）
-- 建立 PDF 輸出系統：`大陸蘇州機械手臂/generate_pdf.js`
-  - Playwright headless Chromium 產生 A4 橫向 PDF
-  - 版面：藍色全寬 header bar + 左欄標題 35% / 右欄圖片 65%
-  - 每張 task-item 獨佔一頁，作業日期 badge 顯示於標題左欄下方
-  - 自我驗證迴圈（最多 3 次重試）：檢查首頁空白、卡片高度、圖片渲染
-- 移除 `index.html` 的 `@media print` CSS，網頁與 PDF 邏輯完全分離
-- 建立專案根目錄 `package.json`，宣告 playwright 依賴（`npm install` 後可用）
-- PDF 輸出指令：`node 大陸蘇州機械手臂/generate_pdf.js`
-- 建立 `.gitignore`：排除 `generate_pdf.js`、`package.json`、`node_modules/`、`*.pdf`，PDF 模組不推送至 GitHub
-
-### 2026/04/11（版面重構）
-- 頂部欄位固定：`header` + `info-bar` 包入 `.sticky-header`（`position: sticky; top: 0; z-index: 100`）
-- 版面全面重構，移除時間軸（垂直線、左側日期欄、藍點），改為日期群組卡片格式
-- 新增月份 Tab 列（`position: sticky` 內，JS 切換月份 show/hide `.month-section`）
-- 新增側邊日期索引（`position: fixed`，> 1080px 顯示，IntersectionObserver 自動 highlight）
-- 新增橫向日期膠囊列（`overflow-x: auto`，< 1080px 替代側邊索引）
-- 動態 scroll-margin-top：JS 量測 `.sticky-header` 實際高度 + 16px，確保錨點定位準確
-- 導航鎖 `isNavigating`：點擊導航後鎖定 900ms，避免 Observer 與錨點捲動衝突
-- `scrollIntoView` 加 `block: 'nearest'`：防止膠囊 scrollIntoView 影響頁面垂直捲動
-- 移除 info-bar（開始日期、地點），badge 移入 header 右側（`margin-left: auto`），全裝置一致
-
-### 2026/04/12
-- 返回按鈕縮小：`← 返回目錄` → SVG chevron icon + 「返回」，寬度縮短約 3 字元
-  - `.back-link` font-size 1rem → 0.9rem，gap 6px → 4px
-  - 規範更新：個別專案頁返回連結使用圖示 + 短文字形式
-- Lightbox 點擊圖片關閉：加入 `cursor: zoom-out` + click 事件綁定 close
-  - 現在任何點擊（圖片本身 / 圖片外圍 / × / Esc）皆可關閉
-- 全站 task-item 補齊標題修飾與描述（`.task-desc`）：
-  - 04/10「機械手臂設備抵達廠內，完成卸貨定位」→「機械手臂進廠抵位」+ 描述
-  - 04/10「配電箱初步裝配作業」→「配電箱初步裝配」+ 描述
-  - 04/11「2號、3號配電箱初步裝配」加描述
-  - 04/11「RB-1底架初步裝配」→「RB-1 底架初步裝配」+ 描述
-  - 04/11「RB-2 底架初步組立」描述「機器手臂」→「機械手臂」+ 句末加「作業」
-- 建立用詞規範與 task-item 撰寫規範（見上方規範區塊）
+輸出格式：A4 橫向，每張 task-item 一頁，左欄標題 35% / 右欄圖片 65%。
