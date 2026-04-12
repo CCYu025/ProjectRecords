@@ -30,10 +30,6 @@
       color: #1A1A1A;
       letter-spacing: 0.02em;
     }
-    header .date {
-      font-size: 1rem;
-      color: #7A6E63;
-    }
 
     /* ── Stats bar ── */
     .stats {
@@ -248,7 +244,6 @@
 
   <header>
     <h1>進行中專案紀錄</h1>
-    <span class="date" id="today-date"></span>
   </header>
 
   <div class="stats">
@@ -306,13 +301,6 @@
 
   <script src="大陸蘇州機械手臂/project-info.js"></script>
   <script>
-    // 今日日期
-    const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    document.getElementById('today-date').textContent = `${y}/${m}/${day}`;
-
     // 渲染專案卡片資訊
     function renderProject(key, data) {
       // 地點

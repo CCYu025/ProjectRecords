@@ -70,7 +70,7 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 
 ## 主頁 index.html 規範
 
-- Header：「進行中專案紀錄」+ 今日日期（JS 自動顯示）
+- Header：「進行中專案紀錄」（今日日期已移除，卡片的最新更新日期提供足夠時間資訊）
 - 藍色統計列：專案總數 / 進行中 / 已完成
 - 專案卡片 Grid（`minmax(320px, 1fr)`，gap 32px）
 - 每張卡片顯示：專案名稱、地點、時間軸進度條、階段膠囊、最新更新日期、查看詳情按鈕
