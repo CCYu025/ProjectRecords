@@ -54,7 +54,7 @@
       line-height: 1;
     }
     .stat-item .label {
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: #BFDBFE;
       margin-top: 2px;
     }
@@ -83,14 +83,14 @@
     .project-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 24px;
+      gap: 32px;
     }
 
     .project-card {
       background: #FDFAF6;
       border: 1px solid #E8E0D4;
       border-radius: 10px;
-      padding: 28px;
+      padding: 32px;
       text-decoration: none;
       color: inherit;
       display: block;
@@ -108,7 +108,7 @@
       margin-bottom: 12px;
     }
     .card-title {
-      font-size: 1.125rem;
+      font-size: 1.375rem;
       font-weight: 600;
       color: #1A1A1A;
       line-height: 1.4;
@@ -150,11 +150,73 @@
     }
     .badge-paused::before { background: #EF4444; }
 
-    .card-summary {
+    /* 地點資訊列 */
+    .card-info {
+      margin-bottom: 14px;
+    }
+    .card-info-item {
       font-size: 1rem;
-      color: #5C4E43;
-      line-height: 1.8;
-      margin-bottom: 16px;
+      color: #7A6E63;
+    }
+
+    /* 時間軸進度條 */
+    .card-timeline {
+      margin-bottom: 14px;
+    }
+    .timeline-label {
+      font-size: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .timeline-dates { color: #7A6E63; }
+    .timeline-pct   { font-weight: 600; color: #2563EB; }
+    .timeline-bar {
+      height: 9px;
+      background: #EDE8E0;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .timeline-fill {
+      height: 100%;
+      background: #2563EB;
+      border-radius: 9999px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    /* 階段膠囊列 */
+    .card-phase { margin-bottom: 16px; }
+    .phase-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .phase-step {
+      font-size: 1rem;
+      padding: 5px 15px;
+      border-radius: 9999px;
+      border: 1px solid #D4C9BC;
+      color: #7A6E63;
+      background: transparent;
+      white-space: nowrap;
+    }
+    .phase-step.done {
+      background: #D1FAE5;
+      border-color: #A7F3D0;
+      color: #065F46;
+    }
+    .phase-step.active {
+      background: #2563EB;
+      border-color: #2563EB;
+      color: #fff;
+      font-weight: 600;
+      animation: phase-glow 2s ease-in-out infinite;
+    }
+    @keyframes phase-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.5); }
+      50%       { box-shadow: 0 0 0 5px rgba(37,99,235,0); }
     }
 
     .card-footer {
@@ -165,14 +227,20 @@
       border-top: 1px solid #EDE8E0;
     }
     .card-meta {
-      font-size: 0.9rem;
-      color: #A89E93;
+      font-size: 1rem;
+      color: #7A6E63;
     }
     .card-arrow {
       font-size: 0.9rem;
       color: #2563EB;
       font-weight: 600;
-      padding: 4px 8px;
+      padding: 5px 14px;
+      border: 1.5px solid #2563EB;
+      border-radius: 6px;
+    }
+    .project-card:hover .card-arrow {
+      background: #2563EB;
+      color: #fff;
     }
   </style>
 </head>
@@ -209,11 +277,24 @@
       <a class="project-card" href="大陸蘇州機械手臂/index.html">
         <div class="card-top">
           <span class="card-title">大陸蘇州機械手臂</span>
-          <span class="badge badge-active">進行中</span>
         </div>
-        <p class="card-summary">設備目前於毅豐進行組裝作業</p>
+        <div class="card-info">
+          <span class="card-info-item" id="card-location-大陸蘇州機械手臂"></span>
+        </div>
+        <div class="card-timeline" id="card-timeline-大陸蘇州機械手臂">
+          <div class="timeline-label">
+            <span class="timeline-dates"></span>
+            <span class="timeline-pct">--%</span>
+          </div>
+          <div class="timeline-bar">
+            <div class="timeline-fill"></div>
+          </div>
+        </div>
+        <div class="card-phase">
+          <div class="phase-steps" id="card-phases-大陸蘇州機械手臂"></div>
+        </div>
         <div class="card-footer">
-          <span class="card-meta">最新更新：2026/04/11</span>
+          <span class="card-meta" id="card-update-大陸蘇州機械手臂"></span>
           <span class="card-arrow">查看詳情 →</span>
         </div>
       </a>
@@ -223,12 +304,51 @@
     </div>
   </main>
 
+  <script src="大陸蘇州機械手臂/project-info.js"></script>
   <script>
+    // 今日日期
     const d = new Date();
     const y = d.getFullYear();
     const m = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
     document.getElementById('today-date').textContent = `${y}/${m}/${day}`;
+
+    // 渲染專案卡片資訊
+    function renderProject(key, data) {
+      // 地點
+      const loc = document.getElementById('card-location-' + key);
+      if (loc) loc.textContent = '地點：' + data.location;
+
+      // 最新更新
+      const upd = document.getElementById('card-update-' + key);
+      if (upd) upd.textContent = '最新更新：' + data.lastUpdate;
+
+      // 時間軸進度條
+      const tl = document.getElementById('card-timeline-' + key);
+      if (tl) {
+        const start = new Date(data.startDate);
+        const end   = new Date(data.endDate);
+        const now   = new Date();
+        const pct   = Math.min(100, Math.max(0, (now - start) / (end - start) * 100));
+        const fmt   = dt => (dt.getMonth() + 1) + '/' + dt.getDate();
+        tl.querySelector('.timeline-dates').textContent = fmt(start) + ' ─── ' + fmt(end);
+        tl.querySelector('.timeline-pct').textContent   = Math.round(pct) + '%';
+        tl.querySelector('.timeline-fill').style.width  = pct.toFixed(1) + '%';
+      }
+
+      // 階段膠囊
+      const ps = document.getElementById('card-phases-' + key);
+      if (ps) {
+        ps.innerHTML = data.phases.map((name, i) => {
+          let cls = 'phase-step';
+          if (i <= data.doneUpTo)      cls += ' done';
+          if (i === data.currentPhase) cls += ' active';
+          return `<span class="${cls}">${name}</span>`;
+        }).join('');
+      }
+    }
+
+    renderProject('大陸蘇州機械手臂', 大陸蘇州機械手臂);
   </script>
 
 </body>
