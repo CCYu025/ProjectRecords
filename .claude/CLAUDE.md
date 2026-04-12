@@ -221,3 +221,10 @@ node {專案名稱}/generate_pdf.js
 - 導航鎖 `isNavigating`：點擊導航後鎖定 900ms，避免 Observer 與錨點捲動衝突
 - `scrollIntoView` 加 `block: 'nearest'`：防止膠囊 scrollIntoView 影響頁面垂直捲動
 - 移除 info-bar（開始日期、地點），badge 移入 header 右側（`margin-left: auto`），全裝置一致
+
+### 2026/04/12
+- 返回按鈕縮小：`← 返回目錄` → SVG chevron icon + 「返回」，寬度縮短約 3 字元
+  - `.back-link` font-size 1rem → 0.9rem，gap 6px → 4px
+  - 規範更新：個別專案頁返回連結使用圖示 + 短文字形式
+- Lightbox 點擊圖片關閉：加入 `cursor: zoom-out` + click 事件綁定 close
+  - 現在任何點擊（圖片本身 / 圖片外圍 / × / Esc）皆可關閉
