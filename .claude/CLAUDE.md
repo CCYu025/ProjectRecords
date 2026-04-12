@@ -91,6 +91,28 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 - 內容：以 `.date-group` 為單位，日期標題在上，task-item 卡片堆疊於下
 - 照片支援 Lightbox（點擊放大、Esc 關閉、← → 切換、底部顯示工作項目名稱）
 
+### 用詞規範
+
+| 項目 | 正確用詞 | 避免 |
+|------|----------|------|
+| 手臂設備 | 機械手臂 | 機器手臂 |
+| 電控設備 | 配電箱 | 電控箱 |
+| 底座結構 | 底架 | 底座、基架 |
+
+### task-item 標題與描述規範
+
+- 標題：精簡名詞式，英文縮寫與中文之間加空格（如 `RB-1 底架初步裝配`）
+- 描述：一句話，動詞開頭，句末加「作業」（如 `完成 RB-1 機械手臂底架的初步裝配作業。`）
+- 使用 `.task-desc` 元素，置於 `.task-title` 下方、`.task-images` 上方
+
+```html
+<div class="task-item">
+  <div class="task-title">{精簡標題}</div>
+  <div class="task-desc">{一句描述，句末含句號}</div>
+  <div class="task-images">...</div>
+</div>
+```
+
 ### 新增日期紀錄範本
 
 **① 側邊索引 + 膠囊列各加一行（`data-month` 對應所屬月份）：**
@@ -108,7 +130,8 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
   <div class="date-heading">2026 / 04 / 12</div>
 
   <div class="task-item">
-    <div class="task-title">{工作項目名稱}</div>
+    <div class="task-title">{精簡標題}</div>
+    <div class="task-desc">{一句描述，句末含句號}</div>
     <div class="task-images">
       <div class="img-wrapper">
         <img src="照片/20260412/{檔名}.jpg" alt="{工作項目名稱}">
@@ -228,3 +251,10 @@ node {專案名稱}/generate_pdf.js
   - 規範更新：個別專案頁返回連結使用圖示 + 短文字形式
 - Lightbox 點擊圖片關閉：加入 `cursor: zoom-out` + click 事件綁定 close
   - 現在任何點擊（圖片本身 / 圖片外圍 / × / Esc）皆可關閉
+- 全站 task-item 補齊標題修飾與描述（`.task-desc`）：
+  - 04/10「機械手臂設備抵達廠內，完成卸貨定位」→「機械手臂進廠抵位」+ 描述
+  - 04/10「配電箱初步裝配作業」→「配電箱初步裝配」+ 描述
+  - 04/11「2號、3號配電箱初步裝配」加描述
+  - 04/11「RB-1底架初步裝配」→「RB-1 底架初步裝配」+ 描述
+  - 04/11「RB-2 底架初步組立」描述「機器手臂」→「機械手臂」+ 句末加「作業」
+- 建立用詞規範與 task-item 撰寫規範（見上方規範區塊）
