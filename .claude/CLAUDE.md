@@ -186,6 +186,20 @@ sticky header 右上角使用 `header-phase` 元素取代舊的 `badge`：
 </div>
 ```
 
+**一個工作項目含多段描述（各有對應照片）：** 同一張卡片內，依序重複 `.task-desc` + `.task-images` 組合，無需額外 CSS。
+
+```html
+<div class="task-item">
+  <div class="task-title">{精簡標題}</div>
+
+  <div class="task-desc">{描述1，句末含句號}</div>
+  <div class="task-images">...</div>
+
+  <div class="task-desc">{描述2，句末含句號}</div>
+  <div class="task-images">...</div>
+</div>
+```
+
 ### 新增日期紀錄範本
 
 **① 側邊索引 + 膠囊列各加一行（`data-month` 對應所屬月份）：**
@@ -244,7 +258,7 @@ sticky header 右上角使用 `header-phase` 元素取代舊的 `badge`：
 
 | 專案名稱 | 狀態 | 地點 | 最新更新 |
 |----------|------|------|----------|
-| 大陸蘇州機械手臂 | 進行中 | 毅豐橡膠 | 2026/04/12 |
+| 大陸蘇州機械手臂 | 進行中 | 毅豐橡膠 | 2026/04/13 |
 
 ---
 

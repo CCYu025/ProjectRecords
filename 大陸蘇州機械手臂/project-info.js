@@ -10,5 +10,5 @@ var 大陸蘇州機械手臂 = {
   location: '毅豐橡膠',
   startDate: '2026-03-30',   // 整體專案起始
   endDate: '2026-06-30',     // 整體專案結束
-  lastUpdate: '2026/04/12'
+  lastUpdate: '2026/04/13'
 };
