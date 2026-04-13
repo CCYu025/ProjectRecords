@@ -73,67 +73,50 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 - Header：「進行中專案紀錄」（今日日期已移除，卡片的最新更新日期提供足夠時間資訊）
 - 藍色統計列：專案總數 / 進行中 / 已完成
 - 專案卡片 Grid（`minmax(320px, 1fr)`，gap 32px）
-- 每張卡片顯示：專案名稱、地點、時間軸進度條、階段膠囊、最新更新日期、查看詳情按鈕
+- 每張卡片顯示：專案名稱、當前階段標題（可點擊膠囊切換各階段）、階段專屬進度條、階段膠囊按鈕、最新更新日期、查看詳情連結
+- 卡片為 `<div>`（非 `<a>`），由 `renderProject()` 動態生成，無需在 HTML 中手寫卡片結構
+- 統計列（專案總數 / 進行中 / 已完成）由 JS 自動計算
 - **進行中專案不顯示「進行中」badge**（階段膠囊已取代）；「已完成」/「暫停」專案保留 badge
 
 ### project-info.js 規範（每個專案必備）
 
 ```js
 var {專案名稱} = {
-  phases: ['組裝', '配線/配管', 'I/O 測試', '單動測試', '連動測試', '工廠驗收'],
-  currentPhase: 0,        // ← 只改這個數字更新當前階段
-  doneUpTo: -1,           // ← 已完成到第幾步（-1 表示無）
+  phases: [
+    { name: '{階段名稱}', title: '{階段名稱} — {大分類}', start: 'YYYY-MM-DD', end: 'YYYY-MM-DD' },
+    // ... 其餘階段
+  ],
   location: '{地點}',
-  startDate: 'YYYY-MM-DD',
-  endDate: 'YYYY-MM-DD',
-  lastUpdate: 'YYYY/MM/DD'
+  startDate: 'YYYY-MM-DD',   // 整體專案起始（供參考）
+  endDate: 'YYYY-MM-DD',     // 整體專案結束（供參考）
+  lastUpdate: 'YYYY/MM/DD'   // ← 新增 date-group 時必須同步更新
 };
 ```
 
-**更新當前階段：只需修改 `project-info.js` 的 `currentPhase`，主頁卡片與內頁 header 同步反映。**
+**phases 欄位說明：**
+- `name`：短名，顯示於階段膠囊按鈕與內頁 header
+- `title`：長標題，格式 `{階段名稱} — {大分類}`，顯示於主頁卡片進度標題列
+- `start` / `end`：該階段起迄日期，用於自動偵測當前階段與計算進度百分比
 
-### 新增專案卡片範本
+**當前階段自動偵測：** 主頁與內頁均依今日日期自動判斷落在哪個 phase 的 start～end 範圍內，無需手動維護 `currentPhase`。延誤或提早時只需修改對應 phase 的 `end` 或 `start` 日期。
 
-卡片 HTML 使用動態佔位元素，資料由 JS 從 `project-info.js` 讀取：
+### 新增專案（僅需兩行）
 
-```html
-<a class="project-card" href="{資料夾名稱}/index.html">
-  <div class="card-top">
-    <span class="card-title">{專案名稱}</span>
-    <!-- 進行中專案不加 badge；已完成/暫停才加 -->
-  </div>
-  <div class="card-info">
-    <span class="card-info-item" id="card-location-{專案名稱}"></span>
-  </div>
-  <div class="card-timeline" id="card-timeline-{專案名稱}">
-    <div class="timeline-label">
-      <span class="timeline-dates"></span>
-      <span class="timeline-pct">--%</span>
-    </div>
-    <div class="timeline-bar">
-      <div class="timeline-fill"></div>
-    </div>
-  </div>
-  <div class="card-phase">
-    <div class="phase-steps" id="card-phases-{專案名稱}"></div>
-  </div>
-  <div class="card-footer">
-    <span class="card-meta" id="card-update-{專案名稱}"></span>
-    <span class="card-arrow">查看詳情 →</span>
-  </div>
-</a>
-```
+卡片 HTML 由 `renderProject()` 動態生成，主頁 HTML 無需手寫卡片結構。新增專案只需：
 
-新增專案後，在主頁 `<script>` 區塊加入：
+**1. 在主頁 `</body>` 前加入 script 引用：**
 ```html
 <script src="{專案名稱}/project-info.js"></script>
 ```
-並在 `renderProject` 呼叫列表加入：
+
+**2. 在 `renderProject` 呼叫列表加入（進行中省略第三參數）：**
 ```js
-renderProject('{專案名稱}', {專案名稱});
+renderProject('{專案名稱}', {專案名稱});               // 進行中
+renderProject('{專案名稱}', {專案名稱}, 'badge-done');  // 已完成
+renderProject('{專案名稱}', {專案名稱}, 'badge-paused');// 暫停
 ```
 
-狀態標籤 class（僅已完成/暫停用）：`badge-done`（已完成）／`badge-paused`（暫停）
+統計列（專案總數 / 進行中 / 已完成）自動更新，無需手動修改。
 
 ---
 
@@ -154,12 +137,30 @@ sticky header 右上角使用 `header-phase` 元素取代舊的 `badge`：
 <span class="header-phase" id="inner-phase" style="margin-left:auto"></span>
 ```
 
-在頁面底部 script 引入並渲染：
+在頁面底部 script 引入並渲染（依今日日期自動偵測當前階段）：
 ```html
 <script src="project-info.js"></script>
 <script>
   const _p = {專案名稱};
-  document.getElementById('inner-phase').textContent = _p.phases[_p.currentPhase];
+  (function() {
+    const phases = _p.phases;
+    const now = new Date(); now.setHours(0, 0, 0, 0);
+    const first = new Date(phases[0].start); first.setHours(0, 0, 0, 0);
+    let idx = 0;
+    if (now >= first) {
+      idx = phases.length - 1;
+      for (let i = 0; i < phases.length; i++) {
+        const s = new Date(phases[i].start); s.setHours(0, 0, 0, 0);
+        const e = new Date(phases[i].end);   e.setHours(0, 0, 0, 0);
+        if (now >= s && now <= e) { idx = i; break; }
+        if (i < phases.length - 1) {
+          const ns = new Date(phases[i + 1].start); ns.setHours(0, 0, 0, 0);
+          if (now > e && now < ns) { idx = i + 1; break; }
+        }
+      }
+    }
+    document.getElementById('inner-phase').textContent = phases[idx].name;
+  })();
 </script>
 ```
 
@@ -251,17 +252,20 @@ sticky header 右上角使用 `header-phase` 元素取代舊的 `badge`：
 
 1. 取得 Word 草稿（含照片）
 2. 在專案資料夾建立 `index.html`（依上方規範）
-3. 建立 `project-info.js`（填入 phases、地點、時程）
+3. 建立 `project-info.js`（填入 phases 物件陣列、地點、時程）
 4. 將 Word 草稿移入 `草稿/` 子資料夾
-5. 更新主頁 `index.html`：加入卡片 HTML + script 引用
+5. 更新主頁 `index.html`：加入 script 引用 + `renderProject()` 呼叫（無需寫卡片 HTML）
 
-### 更新當前階段
+### 調整階段時程（延誤 / 提早）
 
-只需編輯 `{專案名稱}/project-info.js`，修改 `currentPhase` 數字，主頁與內頁自動同步。
+直接修改 `project-info.js` 中對應 phase 的 `start` / `end` 日期，主頁與內頁自動重新計算。**無需手動指定當前階段。**
 
-### 更新最新紀錄日期
+### 新增施工紀錄（必須同步更新 lastUpdate）
 
-新增 date-group 到內頁時，同步更新 `project-info.js` 的 `lastUpdate` 為該日期，主頁卡片即自動反映最新施工日期。
+新增 date-group 到內頁時，**必須同步更新 `project-info.js` 的 `lastUpdate` 為該施工日期**。
+主頁卡片「最新更新」日期以此為唯一來源，無法自動跨檔案讀取，故此為強制規範。
+
+> Claude Code 執行新增紀錄任務時，應自動完成 `lastUpdate` 的同步更新，不需使用者另行交代。
 
 ### PDF 輸出
 

@@ -611,7 +611,25 @@
   <script src="project-info.js"></script>
   <script>
     const _p = 大陸蘇州機械手臂;
-    document.getElementById('inner-phase').textContent = _p.phases[_p.currentPhase];
+    (function() {
+      const phases = _p.phases;
+      const now = new Date(); now.setHours(0, 0, 0, 0);
+      const first = new Date(phases[0].start); first.setHours(0, 0, 0, 0);
+      let idx = 0;
+      if (now >= first) {
+        idx = phases.length - 1;
+        for (let i = 0; i < phases.length; i++) {
+          const s = new Date(phases[i].start); s.setHours(0, 0, 0, 0);
+          const e = new Date(phases[i].end);   e.setHours(0, 0, 0, 0);
+          if (now >= s && now <= e) { idx = i; break; }
+          if (i < phases.length - 1) {
+            const ns = new Date(phases[i + 1].start); ns.setHours(0, 0, 0, 0);
+            if (now > e && now < ns) { idx = i + 1; break; }
+          }
+        }
+      }
+      document.getElementById('inner-phase').textContent = phases[idx].name;
+    })();
   </script>
 
 </body>

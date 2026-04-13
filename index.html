@@ -87,9 +87,8 @@
       border: 1px solid #E8E0D4;
       border-radius: 10px;
       padding: 32px;
-      text-decoration: none;
-      color: inherit;
       display: block;
+      cursor: pointer;
       transition: box-shadow 0.15s, border-color 0.15s;
     }
     .project-card:hover {
@@ -146,13 +145,14 @@
     }
     .badge-paused::before { background: #EF4444; }
 
-    /* 地點資訊列 */
+    /* 階段進度標題列 */
     .card-info {
       margin-bottom: 14px;
     }
-    .card-info-item {
+    .card-phase-title {
       font-size: 1rem;
-      color: #7A6E63;
+      color: #5C4E43;
+      font-weight: 500;
     }
 
     /* 時間軸進度條 */
@@ -193,10 +193,13 @@
       font-size: 1rem;
       padding: 5px 15px;
       border-radius: 9999px;
-      border: 1px solid #D4C9BC;
+      border: 2px solid #D4C9BC;
       color: #7A6E63;
       background: transparent;
       white-space: nowrap;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
     }
     .phase-step.done {
       background: #D1FAE5;
@@ -209,6 +212,11 @@
       color: #fff;
       font-weight: 600;
       animation: phase-glow 2s ease-in-out infinite;
+    }
+    .phase-step.selected {
+      border: 2px solid #F59E0B;
+      background: #FEF3C7;
+      color: #92400E;
     }
     @keyframes phase-glow {
       0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.5); }
@@ -233,8 +241,11 @@
       padding: 5px 14px;
       border: 1.5px solid #2563EB;
       border-radius: 6px;
+      text-decoration: none;
+      display: inline-block;
     }
-    .project-card:hover .card-arrow {
+    .project-card:hover .card-arrow,
+    .card-arrow:hover {
       background: #2563EB;
       color: #fff;
     }
@@ -248,92 +259,164 @@
 
   <div class="stats">
     <div class="stat-item">
-      <span class="num">1</span>
+      <span class="num" id="stat-total">0</span>
       <span class="label">專案總數</span>
     </div>
     <div class="stat-divider"></div>
     <div class="stat-item">
-      <span class="num">1</span>
+      <span class="num" id="stat-active">0</span>
       <span class="label">進行中</span>
     </div>
     <div class="stat-divider"></div>
     <div class="stat-item">
-      <span class="num">0</span>
+      <span class="num" id="stat-done">0</span>
       <span class="label">已完成</span>
     </div>
   </div>
 
   <main>
-    <div class="project-grid">
-
-      <!-- 大陸蘇州機械手臂 -->
-      <a class="project-card" href="大陸蘇州機械手臂/index.html">
-        <div class="card-top">
-          <span class="card-title">大陸蘇州機械手臂</span>
-        </div>
-        <div class="card-info">
-          <span class="card-info-item" id="card-location-大陸蘇州機械手臂"></span>
-        </div>
-        <div class="card-timeline" id="card-timeline-大陸蘇州機械手臂">
-          <div class="timeline-label">
-            <span class="timeline-dates"></span>
-            <span class="timeline-pct">--%</span>
-          </div>
-          <div class="timeline-bar">
-            <div class="timeline-fill"></div>
-          </div>
-        </div>
-        <div class="card-phase">
-          <div class="phase-steps" id="card-phases-大陸蘇州機械手臂"></div>
-        </div>
-        <div class="card-footer">
-          <span class="card-meta" id="card-update-大陸蘇州機械手臂"></span>
-          <span class="card-arrow">查看詳情 →</span>
-        </div>
-      </a>
-
-      <!-- 新增專案時在此加入卡片 -->
-
-    </div>
+    <div class="project-grid"></div>
   </main>
 
   <script src="大陸蘇州機械手臂/project-info.js"></script>
   <script>
-    // 渲染專案卡片資訊
-    function renderProject(key, data) {
-      // 地點
-      const loc = document.getElementById('card-location-' + key);
-      if (loc) loc.textContent = '地點：' + data.location;
+    // ── 統計計數 ──
+    let _total = 0, _done = 0, _paused = 0;
+    function updateStats() {
+      document.getElementById('stat-total').textContent  = _total;
+      document.getElementById('stat-active').textContent = _total - _done - _paused;
+      document.getElementById('stat-done').textContent   = _done;
+    }
 
-      // 最新更新
-      const upd = document.getElementById('card-update-' + key);
-      if (upd) upd.textContent = '最新更新：' + data.lastUpdate;
+    // ── 依今日日期自動偵測當前階段 index ──
+    function detectCurrentPhase(phases) {
+      const now = new Date(); now.setHours(0, 0, 0, 0);
+      const first = new Date(phases[0].start); first.setHours(0, 0, 0, 0);
+      if (now < first) return 0;
+      for (let i = 0; i < phases.length; i++) {
+        const s = new Date(phases[i].start); s.setHours(0, 0, 0, 0);
+        const e = new Date(phases[i].end);   e.setHours(0, 0, 0, 0);
+        if (now >= s && now <= e) return i;
+        if (i < phases.length - 1) {
+          const ns = new Date(phases[i + 1].start); ns.setHours(0, 0, 0, 0);
+          if (now > e && now < ns) return i + 1;
+        }
+      }
+      return phases.length - 1;
+    }
 
-      // 時間軸進度條
+    // ── 工具函式 ──
+    function calcPhasePct(phase) {
+      const start = new Date(phase.start); start.setHours(0, 0, 0, 0);
+      const end   = new Date(phase.end);   end.setHours(0, 0, 0, 0);
+      const now   = new Date();            now.setHours(0, 0, 0, 0);
+      if (now < start) return 0;
+      if (now >= end)  return 100;
+      return Math.min(100, Math.max(0, (now - start) / (end - start) * 100));
+    }
+
+    function fmtDate(dateStr) {
+      const d = new Date(dateStr);
+      return (d.getMonth() + 1) + '/' + d.getDate();
+    }
+
+    function updatePhaseDisplay(key, data, idx) {
+      const phase = data.phases[idx];
+      const titleEl = document.getElementById('card-phase-title-' + key);
+      if (titleEl) titleEl.textContent = '進度：' + phase.title;
       const tl = document.getElementById('card-timeline-' + key);
       if (tl) {
-        const start = new Date(data.startDate);
-        const end   = new Date(data.endDate);
-        const now   = new Date();
-        const pct   = Math.min(100, Math.max(0, (now - start) / (end - start) * 100));
-        const fmt   = dt => (dt.getMonth() + 1) + '/' + dt.getDate();
-        tl.querySelector('.timeline-dates').textContent = fmt(start) + ' ─── ' + fmt(end);
-        tl.querySelector('.timeline-pct').textContent   = Math.round(pct) + '%';
-        tl.querySelector('.timeline-fill').style.width  = pct.toFixed(1) + '%';
-      }
-
-      // 階段膠囊
-      const ps = document.getElementById('card-phases-' + key);
-      if (ps) {
-        ps.innerHTML = data.phases.map((name, i) => {
-          let cls = 'phase-step';
-          if (i <= data.doneUpTo)      cls += ' done';
-          if (i === data.currentPhase) cls += ' active';
-          return `<span class="${cls}">${name}</span>`;
-        }).join('');
+        const start = new Date(phase.start); start.setHours(0, 0, 0, 0);
+        const now   = new Date();            now.setHours(0, 0, 0, 0);
+        const pct   = calcPhasePct(phase);
+        tl.querySelector('.timeline-dates').textContent = fmtDate(phase.start) + ' ─── ' + fmtDate(phase.end);
+        const pctEl = tl.querySelector('.timeline-pct');
+        pctEl.textContent = Math.round(pct) + '%';
+        pctEl.style.color = now < start ? '#7A6E63' : '#2563EB';
+        tl.querySelector('.timeline-fill').style.width = pct.toFixed(1) + '%';
       }
     }
 
+    // ── 主函式：建立卡片 + 綁定事件 ──
+    // badgeClass: 'badge-done' | 'badge-paused' | 未傳入（進行中）
+    function renderProject(key, data, badgeClass) {
+      // 統計
+      _total++;
+      if (badgeClass === 'badge-done')   _done++;
+      if (badgeClass === 'badge-paused') _paused++;
+      updateStats();
+
+      // 建立卡片 HTML
+      const href = key + '/index.html';
+      const badgeLabel = { 'badge-done': '已完成', 'badge-paused': '暫停' };
+      const badgeHtml  = badgeClass
+        ? `<span class="badge ${badgeClass}">${badgeLabel[badgeClass]}</span>`
+        : '';
+
+      const card = document.createElement('div');
+      card.className    = 'project-card';
+      card.id           = 'project-card-' + key;
+      card.dataset.href = href;
+      card.innerHTML = `
+        <div class="card-top">
+          <span class="card-title">${key}</span>${badgeHtml}
+        </div>
+        <div class="card-info">
+          <span class="card-phase-title" id="card-phase-title-${key}"></span>
+        </div>
+        <div class="card-timeline" id="card-timeline-${key}">
+          <div class="timeline-label">
+            <span class="timeline-dates"></span>
+            <span class="timeline-pct">--%</span>
+          </div>
+          <div class="timeline-bar"><div class="timeline-fill"></div></div>
+        </div>
+        <div class="card-phase">
+          <div class="phase-steps" id="card-phases-${key}"></div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta" id="card-update-${key}"></span>
+          <a class="card-arrow" href="${href}">查看詳情 →</a>
+        </div>
+      `;
+      document.querySelector('.project-grid').appendChild(card);
+
+      // 最新更新
+      document.getElementById('card-update-' + key).textContent = '最新更新：' + data.lastUpdate;
+
+      // 自動偵測當前階段
+      const currentIdx = detectCurrentPhase(data.phases);
+
+      // 階段膠囊
+      const ps = document.getElementById('card-phases-' + key);
+      ps.innerHTML = data.phases.map((phase, i) => {
+        let cls = 'phase-step';
+        if (i < currentIdx)  cls += ' done';
+        if (i === currentIdx) cls += ' active';
+        return `<button class="${cls}" data-index="${i}">${phase.name}</button>`;
+      }).join('');
+
+      ps.addEventListener('click', function(e) {
+        const btn = e.target.closest('button.phase-step');
+        if (!btn) return;
+        e.stopPropagation();
+        const idx = parseInt(btn.dataset.index, 10);
+        ps.querySelectorAll('.phase-step').forEach(b => b.classList.remove('selected'));
+        if (idx !== currentIdx) btn.classList.add('selected');
+        updatePhaseDisplay(key, data, idx);
+      });
+
+      // 預設顯示當前進行中階段
+      updatePhaseDisplay(key, data, currentIdx);
+
+      // 卡片整體可點
+      card.addEventListener('click', function(e) {
+        if (e.target.closest('button') || e.target.closest('a')) return;
+        window.location.href = href;
+      });
+    }
+
+    // ── 專案清單（新增專案只需加這兩行）──
     renderProject('大陸蘇州機械手臂', 大陸蘇州機械手臂);
   </script>
 
