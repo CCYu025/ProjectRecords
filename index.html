@@ -288,15 +288,9 @@
     .doc-sheet-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 16px 24px;
-      border-bottom: 1px solid #E8E0D4;
+      justify-content: flex-end;
+      padding: 12px 20px;
       flex-shrink: 0;
-    }
-    .doc-sheet-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #1A1A1A;
     }
     .doc-close-btn {
       height: 44px;
@@ -320,11 +314,13 @@
       padding: 8px 0 24px;
     }
     .doc-category-header {
-      font-size: 1rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: #5C4E43;
-      letter-spacing: 0.04em;
-      padding: 20px 24px 10px;
+      letter-spacing: 0.02em;
+      padding: 20px 24px 12px;
+      border-bottom: 1px solid #E8E0D4;
+      margin-bottom: 16px;
     }
     .doc-grid-row {
       display: flex;
@@ -348,7 +344,7 @@
     }
     .doc-card-icon { font-size: 2.5rem; margin-bottom: 8px; }
     .doc-card-name { font-size: 1rem; font-weight: 600; color: #1A1A1A; line-height: 1.4; }
-    .doc-card-desc { font-size: 0.9rem; color: #7A6E63; margin-top: 6px; line-height: 1.5; }
+    .doc-card-desc { font-size: 1rem; color: #7A6E63; margin-top: 6px; line-height: 1.5; }
 
     /* ── 全螢幕文件覆層 ── */
     .doc-viewer-overlay {
@@ -429,7 +425,6 @@
   <div id="doc-sheet" class="doc-sheet">
     <div class="doc-sheet-handle"></div>
     <div class="doc-sheet-header">
-      <span id="doc-sheet-title" class="doc-sheet-title"></span>
       <button id="doc-close-btn" class="doc-close-btn" aria-label="關閉">✕ 關閉</button>
     </div>
     <div id="doc-sheet-body" class="doc-sheet-body"></div>
@@ -595,7 +590,6 @@
 
     // ── 專案文件底部抽屜 ──
     function openDocSheet(key, docs) {
-      document.getElementById('doc-sheet-title').textContent = key + ' — 專案文件';
       const body = document.getElementById('doc-sheet-body');
       body.innerHTML = '';
       docs.forEach(function(cat) {
