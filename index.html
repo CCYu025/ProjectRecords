@@ -299,18 +299,21 @@
       color: #1A1A1A;
     }
     .doc-close-btn {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      border: none;
+      height: 44px;
+      padding: 0 16px;
+      border-radius: 9999px;
+      border: 1.5px solid #D4C9BC;
       background: transparent;
-      font-size: 1.1rem;
-      color: #7A6E63;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1A1A1A;
       cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      display: flex; align-items: center; gap: 6px;
       font-family: inherit;
       flex-shrink: 0;
+      white-space: nowrap;
     }
-    .doc-close-btn:hover { background: #EDE8E0; color: #1A1A1A; }
+    .doc-close-btn:hover { background: #EDE8E0; border-color: #B8AFA6; }
     .doc-sheet-body {
       flex: 1;
       overflow-y: auto;
@@ -427,7 +430,7 @@
     <div class="doc-sheet-handle"></div>
     <div class="doc-sheet-header">
       <span id="doc-sheet-title" class="doc-sheet-title"></span>
-      <button id="doc-close-btn" class="doc-close-btn" aria-label="關閉">✕</button>
+      <button id="doc-close-btn" class="doc-close-btn" aria-label="關閉">✕ 關閉</button>
     </div>
     <div id="doc-sheet-body" class="doc-sheet-body"></div>
   </div>
