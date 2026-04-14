@@ -17,6 +17,8 @@
 ```
 [進行中]專案紀錄/
 ├── index.html                  ← 主頁目錄（所有專案卡片列表）
+├── assets/
+│   └── logo.png                ← 毅豐 YU FENG logo（主頁與各內頁共用）
 ├── package.json                ← Node.js 依賴（playwright）
 ├── node_modules/               ← npm install 產生，勿手動修改
 ├── .claude/
@@ -70,7 +72,7 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 
 ## 主頁 index.html 規範
 
-- Header：「進行中專案紀錄」（今日日期已移除，卡片的最新更新日期提供足夠時間資訊）
+- Header：左側為 `assets/logo.png` 圖片（`<a href="index.html">` 包覆，點擊回主頁，height 44px），無文字標題
 - 藍色統計列：專案總數 / 進行中 / 已完成
 - 專案卡片 Grid（`minmax(320px, 1fr)`，gap 32px）
 - 每張卡片顯示：專案名稱、當前階段標題（可點擊膠囊切換各階段）、階段專屬進度條、階段膠囊按鈕、最新更新日期、查看詳情連結
@@ -94,11 +96,11 @@ var {專案名稱} = {
 ```
 
 **phases 欄位說明：**
-- `name`：短名，顯示於階段膠囊按鈕與內頁 header
+- `name`：短名，顯示於階段膠囊按鈕（主頁卡片）
 - `title`：長標題，格式 `{階段名稱} — {大分類}`，顯示於主頁卡片進度標題列
 - `start` / `end`：該階段起迄日期，用於自動偵測當前階段與計算進度百分比
 
-**當前階段自動偵測：** 主頁與內頁均依今日日期自動判斷落在哪個 phase 的 start～end 範圍內，無需手動維護 `currentPhase`。延誤或提早時只需修改對應 phase 的 `end` 或 `start` 日期。
+**當前階段自動偵測：** 主頁依今日日期自動判斷落在哪個 phase 的 start～end 範圍內，無需手動維護 `currentPhase`。延誤或提早時只需修改對應 phase 的 `end` 或 `start` 日期。
 
 ### 新增專案（僅需兩行）
 
@@ -122,46 +124,24 @@ renderProject('{專案名稱}', {專案名稱}, 'badge-paused');// 暫停
 
 ## 個別專案頁規範
 
-- Sticky Header：SVG chevron 返回連結 + 專案名稱 + **當前階段膠囊**靠右（`class="header-phase"`，含脈動動畫）
+- Sticky Header：左側為 `../assets/logo.png` 圖片（`<a href="../index.html">` 包覆，height 44px），無返回文字、無分隔線、無專案名稱標題、無階段膠囊
 - 月份 Tab 列：底線 active 樣式，JS 切換月份顯示（sticky header 第二層）
 - 橫向日期膠囊列：< 1080px 時取代側邊索引，`overflow-x: auto`（sticky header 內）
 - 側邊日期索引：`position: fixed`，> 1080px 時顯示，捲動自動 highlight
 - 內容：以 `.date-group` 為單位，日期標題在上，task-item 卡片堆疊於下
 - 照片支援 Lightbox（點擊圖片或背景關閉、Esc 關閉、← → 切換、底部顯示工作項目名稱）
 
-### 內頁 header 階段膠囊
-
-sticky header 右上角使用 `header-phase` 元素取代舊的 `badge`：
+### 內頁 header 範本
 
 ```html
-<span class="header-phase" id="inner-phase" style="margin-left:auto"></span>
+<header>
+  <a href="../index.html"><img src="../assets/logo.png" alt="毅豐專案紀錄" class="site-logo"></a>
+</header>
 ```
 
-在頁面底部 script 引入並渲染（依今日日期自動偵測當前階段）：
-```html
-<script src="project-info.js"></script>
-<script>
-  const _p = {專案名稱};
-  (function() {
-    const phases = _p.phases;
-    const now = new Date(); now.setHours(0, 0, 0, 0);
-    const first = new Date(phases[0].start); first.setHours(0, 0, 0, 0);
-    let idx = 0;
-    if (now >= first) {
-      idx = phases.length - 1;
-      for (let i = 0; i < phases.length; i++) {
-        const s = new Date(phases[i].start); s.setHours(0, 0, 0, 0);
-        const e = new Date(phases[i].end);   e.setHours(0, 0, 0, 0);
-        if (now >= s && now <= e) { idx = i; break; }
-        if (i < phases.length - 1) {
-          const ns = new Date(phases[i + 1].start); ns.setHours(0, 0, 0, 0);
-          if (now > e && now < ns) { idx = i + 1; break; }
-        }
-      }
-    }
-    document.getElementById('inner-phase').textContent = phases[idx].name;
-  })();
-</script>
+CSS（各內頁獨立加入）：
+```css
+.site-logo { height: 44px; width: auto; display: block; }
 ```
 
 ### 用詞規範
