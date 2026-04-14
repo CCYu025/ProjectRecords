@@ -6,5 +6,6 @@ package-lock.json
 **/generate_pdf.js
 package.json
 
-# 產生的 PDF 檔案
+# 產生的 PDF 檔案（排除，但保留 專案文件/ 資料夾內的文件）
 **/*.pdf
+!**/專案文件/**/*.pdf
