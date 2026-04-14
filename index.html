@@ -628,10 +628,17 @@
     }
 
     function openDocViewer(key, doc) {
+      const path = key + '/' + doc.file;
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
+
+      if (doc.type === 'pdf' && isMobile) {
+        window.open(path, '_blank');
+        return;
+      }
+
       document.getElementById('doc-viewer-name').textContent = doc.name;
       const content = document.getElementById('doc-viewer-content');
       content.innerHTML = '';
-      const path = key + '/' + doc.file;
       if (doc.type === 'pdf') {
         const frame = document.createElement('iframe');
         frame.src = path;
