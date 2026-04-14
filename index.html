@@ -224,8 +224,8 @@
 
     .card-footer {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 12px;
       padding-top: 14px;
       border-top: 1px solid #EDE8E0;
     }
@@ -233,20 +233,164 @@
       font-size: 1rem;
       color: #7A6E63;
     }
-    .card-arrow {
-      font-size: 0.9rem;
-      color: #2563EB;
-      font-weight: 600;
-      padding: 5px 14px;
-      border: 1.5px solid #2563EB;
-      border-radius: 6px;
-      text-decoration: none;
-      display: inline-block;
-    }
-    .project-card:hover .card-arrow,
-    .card-arrow:hover {
+    .card-docs-btn {
+      width: 100%;
       background: #2563EB;
       color: #fff;
+      border: none;
+      border-radius: 9999px;
+      padding: 12px 0;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+      transition: background 0.15s;
+    }
+    .card-docs-btn:hover { background: #1D4ED8; }
+
+    /* ── 專案文件底部抽屜 ── */
+    .doc-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .doc-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .doc-sheet {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 90vh;
+      background: #FDFAF6;
+      border-radius: 16px 16px 0 0;
+      z-index: 101;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      box-shadow: 0 -4px 32px rgba(0,0,0,0.12);
+    }
+    .doc-sheet.open {
+      transform: translateY(0);
+    }
+    .doc-sheet-handle {
+      width: 32px; height: 4px;
+      background: #D4C9BC;
+      border-radius: 9999px;
+      margin: 12px auto 0;
+      flex-shrink: 0;
+    }
+    .doc-sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid #E8E0D4;
+      flex-shrink: 0;
+    }
+    .doc-sheet-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1A1A1A;
+    }
+    .doc-close-btn {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      font-size: 1.1rem;
+      color: #7A6E63;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-family: inherit;
+      flex-shrink: 0;
+    }
+    .doc-close-btn:hover { background: #EDE8E0; color: #1A1A1A; }
+    .doc-sheet-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0 24px;
+    }
+    .doc-category-header {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #5C4E43;
+      letter-spacing: 0.04em;
+      padding: 20px 24px 10px;
+    }
+    .doc-grid-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 0 24px;
+    }
+    .doc-card {
+      background: #F5F0E8;
+      border: 1px solid #E8E0D4;
+      border-radius: 10px;
+      padding: 20px 16px;
+      width: 160px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .doc-card:hover {
+      border-color: #2563EB;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.1);
+    }
+    .doc-card-icon { font-size: 2.5rem; margin-bottom: 8px; }
+    .doc-card-name { font-size: 1rem; font-weight: 600; color: #1A1A1A; line-height: 1.4; }
+    .doc-card-desc { font-size: 0.9rem; color: #7A6E63; margin-top: 6px; line-height: 1.5; }
+
+    /* ── 全螢幕文件覆層 ── */
+    .doc-viewer-overlay {
+      position: fixed; inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      flex-direction: column;
+    }
+    .doc-viewer-bar {
+      height: 52px;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      flex-shrink: 0;
+    }
+    .doc-viewer-name {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .doc-viewer-close {
+      color: #fff;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 5px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .doc-viewer-close:hover { background: rgba(255,255,255,0.25); }
+    .doc-viewer-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .doc-viewer-content iframe {
+      width: 100%; height: 100%; border: none;
+    }
+    .doc-viewer-content img {
+      max-width: 100%; max-height: 100%; object-fit: contain;
     }
   </style>
 </head>
@@ -276,6 +420,26 @@
   <main>
     <div class="project-grid"></div>
   </main>
+
+  <!-- 底部抽屜 -->
+  <div id="doc-backdrop" class="doc-backdrop"></div>
+  <div id="doc-sheet" class="doc-sheet">
+    <div class="doc-sheet-handle"></div>
+    <div class="doc-sheet-header">
+      <span id="doc-sheet-title" class="doc-sheet-title"></span>
+      <button id="doc-close-btn" class="doc-close-btn" aria-label="關閉">✕</button>
+    </div>
+    <div id="doc-sheet-body" class="doc-sheet-body"></div>
+  </div>
+
+  <!-- 全螢幕文件覆層 -->
+  <div id="doc-viewer-overlay" class="doc-viewer-overlay" style="display:none">
+    <div class="doc-viewer-bar">
+      <span id="doc-viewer-name" class="doc-viewer-name"></span>
+      <button id="doc-viewer-close" class="doc-viewer-close" aria-label="關閉">✕ 關閉</button>
+    </div>
+    <div id="doc-viewer-content" class="doc-viewer-content"></div>
+  </div>
 
   <script src="大陸蘇州機械手臂/project-info.js"></script>
   <script>
@@ -375,7 +539,9 @@
         </div>
         <div class="card-footer">
           <span class="card-meta" id="card-update-${key}"></span>
-          <a class="card-arrow" href="${href}">查看詳情 →</a>
+          ${data.documents && data.documents.length
+            ? `<button class="card-docs-btn">📂　專案文件</button>`
+            : ''}
         </div>
       `;
       document.querySelector('.project-grid').appendChild(card);
@@ -408,12 +574,94 @@
       // 預設顯示當前進行中階段
       updatePhaseDisplay(key, data, currentIdx);
 
+      // 專案文件按鈕
+      const docsBtn = card.querySelector('.card-docs-btn');
+      if (docsBtn) {
+        docsBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          openDocSheet(key, data.documents);
+        });
+      }
+
       // 卡片整體可點
       card.addEventListener('click', function(e) {
         if (e.target.closest('button') || e.target.closest('a')) return;
         window.location.href = href;
       });
     }
+
+    // ── 專案文件底部抽屜 ──
+    function openDocSheet(key, docs) {
+      document.getElementById('doc-sheet-title').textContent = key + ' — 專案文件';
+      const body = document.getElementById('doc-sheet-body');
+      body.innerHTML = '';
+      docs.forEach(function(cat) {
+        const header = document.createElement('div');
+        header.className = 'doc-category-header';
+        header.textContent = cat.category;
+        body.appendChild(header);
+        const row = document.createElement('div');
+        row.className = 'doc-grid-row';
+        cat.files.forEach(function(doc) {
+          const card = document.createElement('div');
+          card.className = 'doc-card';
+          const icon = doc.type === 'pdf' ? '📄' : '🖼️';
+          card.innerHTML =
+            '<div class="doc-card-icon">' + icon + '</div>' +
+            '<div class="doc-card-name">' + doc.name + '</div>' +
+            '<div class="doc-card-desc">' + doc.desc + '</div>';
+          card.addEventListener('click', function() { openDocViewer(key, doc); });
+          row.appendChild(card);
+        });
+        body.appendChild(row);
+      });
+      document.getElementById('doc-backdrop').classList.add('open');
+      document.getElementById('doc-sheet').classList.add('open');
+    }
+
+    function closeDocSheet() {
+      document.getElementById('doc-backdrop').classList.remove('open');
+      document.getElementById('doc-sheet').classList.remove('open');
+      setTimeout(function() {
+        document.getElementById('doc-sheet-body').innerHTML = '';
+      }, 300);
+    }
+
+    function openDocViewer(key, doc) {
+      document.getElementById('doc-viewer-name').textContent = doc.name;
+      const content = document.getElementById('doc-viewer-content');
+      content.innerHTML = '';
+      const path = key + '/' + doc.file;
+      if (doc.type === 'pdf') {
+        const frame = document.createElement('iframe');
+        frame.src = path;
+        content.appendChild(frame);
+      } else {
+        const img = document.createElement('img');
+        img.src = path;
+        img.alt = doc.name;
+        content.appendChild(img);
+      }
+      document.getElementById('doc-viewer-overlay').style.display = 'flex';
+    }
+
+    function closeDocViewer() {
+      document.getElementById('doc-viewer-overlay').style.display = 'none';
+      document.getElementById('doc-viewer-content').innerHTML = '';
+    }
+
+    // 事件綁定
+    document.getElementById('doc-backdrop').addEventListener('click', closeDocSheet);
+    document.getElementById('doc-close-btn').addEventListener('click', closeDocSheet);
+    document.getElementById('doc-viewer-close').addEventListener('click', closeDocViewer);
+    document.addEventListener('keydown', function(e) {
+      if (e.key !== 'Escape') return;
+      if (document.getElementById('doc-viewer-overlay').style.display !== 'none') {
+        closeDocViewer();
+      } else if (document.getElementById('doc-sheet').classList.contains('open')) {
+        closeDocSheet();
+      }
+    });
 
     // ── 專案清單（新增專案只需加這兩行）──
     renderProject('大陸蘇州機械手臂', 大陸蘇州機械手臂);
