@@ -141,6 +141,7 @@ renderProject('{專案名稱}', {專案名稱}, 'badge-paused');// 暫停
 ## 個別專案頁規範
 
 - **無 Header**：內頁頂部不含 logo 或返回連結（主頁透過「專案紀錄」按鈕以 iframe 抽屜開啟）
+- **捲動行為**：`html { scroll-behavior: smooth; }` — 統一所有 anchor 日期跳轉為平滑捲動，與月份切換 `smooth` 行為一致；在 `<style>` 最上方宣告
 - 月份 Tab 列：底線 active 樣式，JS 切換月份顯示（sticky header 第一層，也是頂部）
 - 橫向日期膠囊列：< 1080px 時取代側邊索引，`overflow-x: auto`（sticky header 內）
 - 側邊日期索引：`position: fixed`，> 1080px 時顯示，捲動自動 highlight
