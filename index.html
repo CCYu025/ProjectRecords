@@ -132,10 +132,12 @@
     .doc-sheet-handle {
       width: 32px; height: 4px; background: #D4C9BC;
       border-radius: 9999px; margin: 12px auto 0; flex-shrink: 0; cursor: grab;
+      touch-action: none;
     }
     .doc-sheet-header {
       display: flex; align-items: center; justify-content: flex-end;
       padding: 12px 20px; flex-shrink: 0;
+      touch-action: none;
     }
     .doc-close-btn {
       height: 44px; padding: 0 16px; border-radius: 9999px;
@@ -203,10 +205,12 @@
     .rec-sheet-handle {
       width: 32px; height: 4px; background: #D4C9BC;
       border-radius: 9999px; margin: 12px auto 0; flex-shrink: 0; cursor: grab;
+      touch-action: none;
     }
     .rec-sheet-header {
       display: flex; align-items: center; justify-content: flex-end;
       padding: 12px 20px 0; flex-shrink: 0;
+      touch-action: none;
     }
     .rec-close-btn {
       height: 44px; padding: 0 16px; border-radius: 9999px;
@@ -533,7 +537,7 @@
         el.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY); }, { passive: true });
         el.addEventListener('mousedown', function(e) { dragStart(e.clientY); e.preventDefault(); });
       });
-      document.addEventListener('touchmove', function(e) { if (dragging) dragMove(e.touches[0].clientY); }, { passive: true });
+      document.addEventListener('touchmove', function(e) { if (dragging) { e.preventDefault(); dragMove(e.touches[0].clientY); } }, { passive: false });
       document.addEventListener('touchend', function() { dragEnd(); });
       document.addEventListener('mousemove', function(e) { if (dragging) dragMove(e.clientY); });
       document.addEventListener('mouseup', function() { dragEnd(); });
@@ -567,7 +571,7 @@
         el.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY); }, { passive: true });
         el.addEventListener('mousedown', function(e) { dragStart(e.clientY); e.preventDefault(); });
       });
-      document.addEventListener('touchmove', function(e) { if (dragging) dragMove(e.touches[0].clientY); }, { passive: true });
+      document.addEventListener('touchmove', function(e) { if (dragging) { e.preventDefault(); dragMove(e.touches[0].clientY); } }, { passive: false });
       document.addEventListener('touchend', function() { dragEnd(); });
       document.addEventListener('mousemove', function(e) { if (dragging) dragMove(e.clientY); });
       document.addEventListener('mouseup', function() { dragEnd(); });
