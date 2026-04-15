@@ -16,63 +16,8 @@
     }
 
     /* ── Sticky wrapper ── */
-    .sticky-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
+    .sticky-header { position: sticky; top: 0; z-index: 100; }
 
-    /* ── Header ── */
-    header {
-      background: #FDFAF6;
-      border-bottom: 1px solid #E8E0D4;
-      padding: 16px 40px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .site-logo {
-      height: 44px;
-      width: auto;
-      display: block;
-    }
-
-    /* Status badges */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 12px;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-      font-weight: 600;
-    }
-    .badge::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-    }
-    .badge-active { background: #FEF3C7; color: #92400E; }
-    .badge-active::before { background: #F59E0B; }
-
-    /* Header 階段膠囊 */
-    .header-phase {
-      font-size: 0.9rem;
-      padding: 4px 14px;
-      border-radius: 9999px;
-      background: #2563EB;
-      border: 1px solid #2563EB;
-      color: #fff;
-      font-weight: 600;
-      white-space: nowrap;
-      animation: phase-glow 2s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-    @keyframes phase-glow {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.5); }
-      50%       { box-shadow: 0 0 0 5px rgba(37,99,235,0); }
-    }
 
     /* ── Month tabs ── */
     .month-tabs {
@@ -94,10 +39,7 @@
       margin-bottom: -2px;
       transition: color 0.15s;
     }
-    .month-tab.active {
-      color: #2563EB;
-      border-bottom-color: #2563EB;
-    }
+    .month-tab.active { color: #2563EB; border-bottom-color: #2563EB; }
     .month-tab:hover:not(.active) { color: #1A1A1A; }
 
     /* ── Side date index ── */
@@ -110,15 +52,6 @@
       flex-direction: column;
       gap: 4px;
       z-index: 50;
-    }
-    .date-index-label {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #7A6E63;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-      text-align: center;
     }
     .date-index-item {
       display: block;
@@ -133,10 +66,9 @@
     }
     .date-index-item:hover { background: #E8E0D4; color: #1A1A1A; }
     .date-index-item.active { background: #2563EB; color: #fff; }
-
     @media (max-width: 1080px) { .date-index { display: none; } }
 
-    /* ── 橫向日期膠囊列（窄螢幕替代側邊索引）── */
+    /* ── 橫向日期膠囊列 ── */
     .date-chips {
       display: none;
       background: #FDFAF6;
@@ -169,25 +101,10 @@
     .date-chip.active { background: #2563EB; color: #fff; }
 
     /* ── Main content ── */
-    main {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 40px 40px;
-    }
-
-    .section-title {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: #7A6E63;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 28px;
-    }
+    main { max-width: 860px; margin: 0 auto; padding: 40px 40px; }
 
     /* ── Date groups ── */
-    .date-group {
-      margin-bottom: 40px;
-    }
+    .date-group { margin-bottom: 40px; }
     .date-group:last-child { margin-bottom: 0; }
 
     .date-heading {
@@ -221,8 +138,7 @@
     }
     .task-title::before {
       content: '';
-      width: 3px;
-      height: 16px;
+      width: 3px; height: 16px;
       background: #2563EB;
       border-radius: 2px;
       flex-shrink: 0;
@@ -235,11 +151,7 @@
       margin: 4px 0 14px;
     }
 
-    .task-images {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .task-images { display: flex; gap: 12px; flex-wrap: wrap; }
     .task-images img {
       width: 100%;
       max-width: 380px;
@@ -252,101 +164,55 @@
       transition: opacity 0.15s;
     }
     .task-images img:hover { opacity: 0.88; }
+    .img-wrapper { flex: 1; min-width: 200px; }
 
     /* ── Lightbox ── */
     #lightbox {
       display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.82);
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.82);
       z-index: 1000;
       align-items: center;
       justify-content: center;
       padding: 24px;
     }
     #lightbox.open { display: flex; }
-
     #lightbox-img {
-      max-width: min(90vw, 960px);
-      max-height: 82vh;
+      max-width: min(90vw, 960px); max-height: 82vh;
       object-fit: contain;
       border-radius: 6px;
       box-shadow: 0 8px 40px rgba(0,0,0,0.5);
-      display: block;
-      cursor: zoom-out;
+      display: block; cursor: zoom-out;
     }
-
     #lightbox-caption {
-      position: fixed;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.55);
-      color: #fff;
-      font-size: 1rem;
-      padding: 6px 18px;
-      border-radius: 9999px;
-      white-space: nowrap;
-      pointer-events: none;
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.55); color: #fff;
+      font-size: 1rem; padding: 6px 18px;
+      border-radius: 9999px; white-space: nowrap; pointer-events: none;
     }
-
     #lightbox-close {
-      position: fixed;
-      top: 18px;
-      right: 22px;
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.75rem;
-      cursor: pointer;
-      line-height: 1;
-      opacity: 0.8;
+      position: fixed; top: 18px; right: 22px;
+      background: none; border: none; color: #fff;
+      font-size: 1.75rem; cursor: pointer; line-height: 1; opacity: 0.8;
     }
     #lightbox-close:hover { opacity: 1; }
-
     .lb-nav {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,0.12);
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      width: 44px;
-      height: 64px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: fixed; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.12); border: none; color: #fff;
+      font-size: 1.5rem; width: 44px; height: 64px;
+      border-radius: 6px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
       transition: background 0.15s;
     }
     .lb-nav:hover { background: rgba(255,255,255,0.22); }
     .lb-nav:disabled { opacity: 0.2; cursor: default; }
-    #lb-prev { left: 16px; }
-    #lb-next { right: 16px; }
-
+    #lb-prev { left: 16px; } #lb-next { right: 16px; }
     #lb-counter {
-      position: fixed;
-      top: 22px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: rgba(255,255,255,0.6);
-      font-size: 0.9rem;
-    }
-    .img-caption {
-      font-size: 0.875rem;
-      color: #7A6E63;
-      margin-top: 6px;
-      text-align: center;
-    }
-    .img-wrapper {
-      flex: 1;
-      min-width: 200px;
+      position: fixed; top: 22px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.6); font-size: 0.9rem;
     }
 
     @media (max-width: 600px) {
-      header { padding: 14px 20px; }
       .month-tabs { padding: 0 20px; }
       main { padding: 28px 20px; }
     }
@@ -355,120 +221,17 @@
 <body>
 
   <div class="sticky-header">
-    <header>
-      <a href="../index.html"><img src="../assets/logo.png" alt="毅豐專案紀錄" class="site-logo"></a>
-    </header>
-
-    <div class="month-tabs">
-      <button class="month-tab active" data-month="2026-04">2026 / 04</button>
-      <!-- 新增月份時在此加 button，data-month="2026-05" -->
-    </div>
-
-    <div class="date-chips">
-      <a class="date-chip active" data-month="2026-04" href="#d20260410">04/10</a>
-      <a class="date-chip" data-month="2026-04" href="#d20260411">04/11</a>
-      <a class="date-chip" data-month="2026-04" href="#d20260413">04/13</a>
-      <!-- 新增日期時在此加 a，data-month 對應月份 -->
-    </div>
+    <!-- 月份 Tab — 由 renderRecordsInto 自動生成 -->
+    <div class="month-tabs"></div>
+    <!-- 橫向日期膠囊 — 由 renderRecordsInto 自動生成 -->
+    <div class="date-chips"></div>
   </div>
 
-  <!-- 側邊日期索引 -->
-  <nav class="date-index" aria-label="日期導覽">
-    <a class="date-index-item active" data-month="2026-04" href="#d20260410">04/10</a>
-    <a class="date-index-item" data-month="2026-04" href="#d20260411">04/11</a>
-    <a class="date-index-item" data-month="2026-04" href="#d20260413">04/13</a>
-    <!-- 新增日期時在此加 a，data-month 對應月份 -->
-  </nav>
+  <!-- 側邊日期索引 — 由 renderRecordsInto 自動生成 -->
+  <nav class="date-index" aria-label="日期導覽"></nav>
 
-  <main>
-
-    <!-- ── 2026/04 ── -->
-    <div class="month-section" data-month="2026-04">
-
-      <!-- 2026/04/10 -->
-      <div class="date-group" id="d20260410">
-        <div class="date-heading">2026 / 04 / 10</div>
-
-        <div class="task-item">
-          <div class="task-title">機械手臂進廠抵位</div>
-          <div class="task-desc">設備運抵毅豐橡膠廠內並確認擺放定位。</div>
-          <div class="task-images">
-            <div class="img-wrapper">
-              <img src="照片/20260410/S__25829379.jpg" alt="機械手臂設備抵達廠內">
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- 2026/04/11 -->
-      <div class="date-group" id="d20260411">
-        <div class="date-heading">2026 / 04 / 11</div>
-
-        <div class="task-item">
-          <div class="task-title">2號、3號配電箱初步裝配</div>
-          <div class="task-desc">完成2號與3號配電箱的初步裝配作業。</div>
-          <div class="task-images">
-            <div class="img-wrapper">
-              <img src="照片/20260411/S__25878531_0.jpg" alt="2號、3號配電箱初步裝配">
-            </div>
-          </div>
-        </div>
-
-        <div class="task-item">
-          <div class="task-title">RB-1 底架初步裝配</div>
-          <div class="task-desc">完成 RB-1 機械手臂底架的初步裝配作業。</div>
-          <div class="task-images">
-            <div class="img-wrapper">
-              <img src="照片/20260411/S__25878532_0.jpg" alt="RB-1底架初步裝配">
-            </div>
-          </div>
-        </div>
-
-        <div class="task-item">
-          <div class="task-title">RB-2 底架初步組立</div>
-          <div class="task-desc">完成 RB-2 機械手臂與軌道台座的初步組立作業。</div>
-          <div class="task-images">
-            <div class="img-wrapper">
-              <img src="照片/20260411/S__25911300_0.jpg" alt="RB-2 底架初步組立">
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- 2026/04/13 -->
-      <div class="date-group" id="d20260413">
-        <div class="date-heading">2026 / 04 / 13</div>
-
-        <div class="task-item">
-          <div class="task-title">標記作業完成</div>
-
-          <div class="task-desc">完成各設備安裝定位基準地線的標記 (Marking) 作業。</div>
-          <div class="task-images">
-            <div class="img-wrapper"><img src="照片/20260413/S__25952272_0.jpg" alt="標記作業完成"></div>
-            <div class="img-wrapper"><img src="照片/20260413/S__25952264_0.jpg" alt="標記作業完成"></div>
-            <div class="img-wrapper"><img src="照片/20260413/S__25952294_0.jpg" alt="標記作業完成"></div>
-          </div>
-
-          <div class="task-desc">完成 C1、C2 加硫設備的地線與高度基準線標記，待磐石加硫設備進廠後定位。</div>
-          <div class="task-images">
-            <div class="img-wrapper"><img src="照片/20260413/S__25952300_0.jpg" alt="標記作業完成"></div>
-            <div class="img-wrapper"><img src="照片/20260413/S__25952295_0.jpg" alt="標記作業完成"></div>
-            <div class="img-wrapper"><img src="照片/20260413/S__25952299_0.jpg" alt="標記作業完成"></div>
-            <div class="img-wrapper"><img src="照片/20260413/S__25952302_0.jpg" alt="標記作業完成"></div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- 新增日期群組時在此往下加 date-group -->
-
-    </div>
-
-    <!-- 新增月份時在此往下加 month-section，data-month="2026-05"，預設 display:none -->
-
-  </main>
+  <!-- 主內容 — 由 renderRecordsInto 自動生成 -->
+  <main></main>
 
   <!-- Lightbox -->
   <div id="lightbox" role="dialog" aria-modal="true">
@@ -480,147 +243,130 @@
     <span id="lightbox-caption"></span>
   </div>
 
+  <script src="records.js"></script>
   <script>
-    // ── 動態設定 scroll-margin-top ──
+    // ── Step 1：從 records.js 渲染所有 DOM ──
+    renderRecordsInto(大陸蘇州機械手臂Records, '', {
+      tabsEl:  document.querySelector('.month-tabs'),
+      chipsEl: document.querySelector('.date-chips'),
+      indexEl: document.querySelector('.date-index'),
+      mainEl:  document.querySelector('main')
+    });
+
+    // ── Step 2：初始化（DOM 已就緒）──
+
+    // scroll-margin-top
     function updateScrollMargin() {
-      const h = document.querySelector('.sticky-header').offsetHeight;
-      document.querySelectorAll('.date-group').forEach(g => {
+      var h = document.querySelector('.sticky-header').offsetHeight;
+      document.querySelectorAll('.date-group').forEach(function(g) {
         g.style.scrollMarginTop = (h + 16) + 'px';
       });
     }
     updateScrollMargin();
     window.addEventListener('resize', updateScrollMargin);
 
-    // ── 月份切換 ──
-    const tabs       = document.querySelectorAll('.month-tab');
-    const sections   = document.querySelectorAll('.month-section');
-    const indexItems = document.querySelectorAll('.date-index-item');
-    const chipItems  = document.querySelectorAll('.date-chip');
+    // 月份切換
+    var tabs       = document.querySelectorAll('.month-tab');
+    var sections   = document.querySelectorAll('.month-section');
+    var indexItems = document.querySelectorAll('.date-index-item');
+    var chipItems  = document.querySelectorAll('.date-chip');
 
-    // 同步更新側邊索引與橫向膠囊列
     function syncNav(month, activeHref) {
-      [indexItems, chipItems].forEach(group => {
-        group.forEach(item => {
-          const belongs = item.dataset.month === month;
+      [indexItems, chipItems].forEach(function(group) {
+        group.forEach(function(item) {
+          var belongs = item.dataset.month === month;
           item.style.display = belongs ? '' : 'none';
           item.classList.toggle('active', belongs && item.getAttribute('href') === activeHref);
         });
       });
     }
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const month = tab.dataset.month;
-        tabs.forEach(t => t.classList.toggle('active', t === tab));
-        sections.forEach(s => {
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var month = tab.dataset.month;
+        tabs.forEach(function(t) { t.classList.toggle('active', t === tab); });
+        sections.forEach(function(s) {
           s.style.display = s.dataset.month === month ? '' : 'none';
         });
-        const firstHref = document.querySelector(`.date-index-item[data-month="${month}"]`)
-                          ?.getAttribute('href') || '';
+        var firstItem = document.querySelector('.date-index-item[data-month="' + month + '"]');
+        var firstHref = firstItem ? firstItem.getAttribute('href') : '';
         syncNav(month, firstHref);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
 
-    // ── 導航鎖：點擊時立即更新顏色，再封鎖 Observer 避免捲動衝突 ──
-    let isNavigating = false;
+    // 導航鎖（初始鎖定 600ms，防止 observer 覆蓋預設 active 狀態）
+    var isNavigating = true;
+    setTimeout(function() { isNavigating = false; }, 600);
     function lockNav(href, month) {
-      syncNav(month, href);   // 先更新顏色
-      isNavigating = true;    // 再封鎖 Observer
-      setTimeout(() => { isNavigating = false; }, 900);
+      syncNav(month, href);
+      isNavigating = true;
+      setTimeout(function() { isNavigating = false; }, 900);
     }
-    indexItems.forEach(item => item.addEventListener('click', () =>
-      lockNav(item.getAttribute('href'), item.dataset.month)));
-    chipItems.forEach(item => item.addEventListener('click', () =>
-      lockNav(item.getAttribute('href'), item.dataset.month)));
+    indexItems.forEach(function(item) {
+      item.addEventListener('click', function() { lockNav(item.getAttribute('href'), item.dataset.month); });
+    });
+    chipItems.forEach(function(item) {
+      item.addEventListener('click', function() { lockNav(item.getAttribute('href'), item.dataset.month); });
+    });
 
-    // ── 捲動時同步高亮側邊索引與膠囊列 ──
-    const dateGroups = document.querySelectorAll('.date-group[id]');
-    const activeMoth = () => document.querySelector('.month-tab.active')?.dataset.month || '';
-    const observer = new IntersectionObserver(entries => {
+    // IntersectionObserver
+    var dateGroups = document.querySelectorAll('.date-group[id]');
+    var observer = new IntersectionObserver(function(entries) {
       if (isNavigating) return;
-      entries.forEach(entry => {
+      entries.forEach(function(entry) {
         if (entry.isIntersecting) {
-          const href = `#${entry.target.id}`;
-          syncNav(activeMoth(), href);
-          // 橫向膠囊列：block:'nearest' 確保只做橫向捲動，不影響頁面垂直位置
-          const activeChip = document.querySelector(`.date-chip[href="${href}"]`);
+          var href = '#' + entry.target.id;
+          var activeMonth = (document.querySelector('.month-tab.active') || {}).dataset.month || '';
+          syncNav(activeMonth, href);
+          var activeChip = document.querySelector('.date-chip[href="' + href + '"]');
           if (activeChip) activeChip.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
         }
       });
     }, { rootMargin: '-30% 0px -60% 0px' });
-    dateGroups.forEach(g => observer.observe(g));
+    dateGroups.forEach(function(g) { observer.observe(g); });
 
-    // ── Lightbox ──
-    const imgs     = Array.from(document.querySelectorAll('.task-images img'));
-    let current    = 0;
-    const lb       = document.getElementById('lightbox');
-    const lbImg    = document.getElementById('lightbox-img');
-    const lbCap    = document.getElementById('lightbox-caption');
-    const lbClose  = document.getElementById('lightbox-close');
-    const lbPrev   = document.getElementById('lb-prev');
-    const lbNext   = document.getElementById('lb-next');
-    const lbCount  = document.getElementById('lb-counter');
+    // Lightbox
+    var imgs    = Array.from(document.querySelectorAll('.task-images img'));
+    var current = 0;
+    var lb      = document.getElementById('lightbox');
+    var lbImg   = document.getElementById('lightbox-img');
+    var lbCap   = document.getElementById('lightbox-caption');
+    var lbClose = document.getElementById('lightbox-close');
+    var lbPrev  = document.getElementById('lb-prev');
+    var lbNext  = document.getElementById('lb-next');
+    var lbCount = document.getElementById('lb-counter');
 
-    function open(index) {
+    function lbOpen(index) {
       current = index;
-      const img = imgs[current];
-      lbImg.src = img.src;
-      lbImg.alt = img.alt;
-      const taskItem = img.closest('.task-item');
-      const titleEl  = taskItem ? taskItem.querySelector('.task-title') : null;
+      var img = imgs[current];
+      lbImg.src = img.src; lbImg.alt = img.alt;
+      var titleEl = img.closest('.task-item') ? img.closest('.task-item').querySelector('.task-title') : null;
       lbCap.textContent = titleEl ? titleEl.textContent.trim() : '';
-      lbCount.textContent = `${current + 1} / ${imgs.length}`;
+      lbCount.textContent = (current + 1) + ' / ' + imgs.length;
       lbPrev.disabled = current === 0;
       lbNext.disabled = current === imgs.length - 1;
       lb.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
-    function close() {
-      lb.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-    function prev() { if (current > 0) open(current - 1); }
-    function next() { if (current < imgs.length - 1) open(current + 1); }
+    function lbClose_() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+    function lbPrev_() { if (current > 0) lbOpen(current - 1); }
+    function lbNext_() { if (current < imgs.length - 1) lbOpen(current + 1); }
 
-    imgs.forEach((img, i) => img.addEventListener('click', () => open(i)));
-    lbImg.addEventListener('click', close);
-    lbClose.addEventListener('click', close);
-    lbPrev.addEventListener('click', prev);
-    lbNext.addEventListener('click', next);
-    lb.addEventListener('click', e => { if (e.target === lb) close(); });
-    document.addEventListener('keydown', e => {
+    imgs.forEach(function(img, i) { img.addEventListener('click', function() { lbOpen(i); }); });
+    lbImg.addEventListener('click', lbClose_);
+    lbClose.addEventListener('click', lbClose_);
+    lbPrev.addEventListener('click', lbPrev_);
+    lbNext.addEventListener('click', lbNext_);
+    lb.addEventListener('click', function(e) { if (e.target === lb) lbClose_(); });
+    document.addEventListener('keydown', function(e) {
       if (!lb.classList.contains('open')) return;
-      if (e.key === 'Escape')     close();
-      if (e.key === 'ArrowLeft')  prev();
-      if (e.key === 'ArrowRight') next();
+      if (e.key === 'Escape')     lbClose_();
+      if (e.key === 'ArrowLeft')  lbPrev_();
+      if (e.key === 'ArrowRight') lbNext_();
     });
   </script>
 
-  <script src="project-info.js"></script>
-  <script>
-    const _p = 大陸蘇州機械手臂;
-    (function() {
-      const phases = _p.phases;
-      const now = new Date(); now.setHours(0, 0, 0, 0);
-      const first = new Date(phases[0].start); first.setHours(0, 0, 0, 0);
-      let idx = 0;
-      if (now >= first) {
-        idx = phases.length - 1;
-        for (let i = 0; i < phases.length; i++) {
-          const s = new Date(phases[i].start); s.setHours(0, 0, 0, 0);
-          const e = new Date(phases[i].end);   e.setHours(0, 0, 0, 0);
-          if (now >= s && now <= e) { idx = i; break; }
-          if (i < phases.length - 1) {
-            const ns = new Date(phases[i + 1].start); ns.setHours(0, 0, 0, 0);
-            if (now > e && now < ns) { idx = i + 1; break; }
-          }
-        }
-      }
-      const phaseEl = document.getElementById('inner-phase');
-      if (phaseEl) phaseEl.textContent = phases[idx].name;
-    })();
-  </script>
 
 </body>
 </html>

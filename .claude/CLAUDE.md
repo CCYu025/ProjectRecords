@@ -24,8 +24,9 @@
 ├── .claude/
 │   └── CLAUDE.md               ← 本檔案
 └── {專案名稱}/
-    ├── index.html              ← 個別專案頁（月份Tab + 日期群組卡片格式，純網頁無列印 CSS）
+    ├── index.html              ← 個別專案頁（月份Tab + 日期群組，由 records.js 動態渲染）
     ├── project-info.js         ← 專案資料單一來源（階段、地點、時程、文件）← 必備
+    ├── records.js              ← 施工紀錄資料模組（新增紀錄唯一需要修改的檔案）← 必備
     ├── generate_pdf.js         ← PDF 輸出模組（獨立，與 index.html 分離）
     ├── 草稿/                   ← Word 草稿歸檔（生成 HTML 後移入）
     │   └── YYYYMMDD.docx
@@ -79,7 +80,8 @@ font-family: system-ui, 'Microsoft JhengHei', '微軟正黑體', sans-serif;
 - 藍色統計列：專案總數 / 進行中 / 已完成
 - 專案卡片 Grid（`minmax(320px, 1fr)`，gap 32px）
 - 每張卡片顯示：專案名稱、當前階段標題（可點擊膠囊切換各階段）、階段專屬進度條、階段膠囊按鈕、最新更新日期
-- 卡片底部：若 `project-info.js` 有 `documents` 欄位，顯示「📂 專案文件」全寬填色按鈕（取代原「查看詳情」）；點擊開啟底部抽屜；無 documents 欄位則無按鈕，點擊卡片本體仍可導向內頁
+- 卡片底部按鈕列：`hasRecords: true` 顯示「📋 專案紀錄」；`documents` 欄位顯示「📂 專案文件」；兩顆均為外框樣式（`#2563EB` 邊框，透明底），並排於 `.card-footer-btns`
+- **卡片本體不可點擊**，僅透過底部按鈕操作
 - 卡片為 `<div>`（非 `<a>`），由 `renderProject()` 動態生成，無需在 HTML 中手寫卡片結構
 - 統計列（專案總數 / 進行中 / 已完成）由 JS 自動計算
 - **進行中專案不顯示「進行中」badge**（階段膠囊已取代）；「已完成」/「暫停」專案保留 badge
@@ -96,6 +98,7 @@ var {專案名稱} = {
   startDate: 'YYYY-MM-DD',   // 整體專案起始（供參考）
   endDate: 'YYYY-MM-DD',     // 整體專案結束（供參考）
   lastUpdate: 'YYYY/MM/DD',  // ← 新增 date-group 時必須同步更新
+  hasRecords: true,          // ← 有 records.js 時加此欄位，顯示「專案紀錄」按鈕
   documents: [               // ← 可選；有此欄位才顯示「專案文件」按鈕
     {
       category: '{分類名稱}',  // 顯示為抽屜內的區塊標題
@@ -137,25 +140,13 @@ renderProject('{專案名稱}', {專案名稱}, 'badge-paused');// 暫停
 
 ## 個別專案頁規範
 
-- Sticky Header：左側為 `../assets/logo.png` 圖片（`<a href="../index.html">` 包覆，height 44px），無返回文字、無分隔線、無專案名稱標題、無階段膠囊
-- 月份 Tab 列：底線 active 樣式，JS 切換月份顯示（sticky header 第二層）
+- **無 Header**：內頁頂部不含 logo 或返回連結（主頁透過「專案紀錄」按鈕以 iframe 抽屜開啟）
+- 月份 Tab 列：底線 active 樣式，JS 切換月份顯示（sticky header 第一層，也是頂部）
 - 橫向日期膠囊列：< 1080px 時取代側邊索引，`overflow-x: auto`（sticky header 內）
 - 側邊日期索引：`position: fixed`，> 1080px 時顯示，捲動自動 highlight
 - 內容：以 `.date-group` 為單位，日期標題在上，task-item 卡片堆疊於下
 - 照片支援 Lightbox（點擊圖片或背景關閉、Esc 關閉、← → 切換、底部顯示工作項目名稱）
-
-### 內頁 header 範本
-
-```html
-<header>
-  <a href="../index.html"><img src="../assets/logo.png" alt="毅豐專案紀錄" class="site-logo"></a>
-</header>
-```
-
-CSS（各內頁獨立加入）：
-```css
-.site-logo { height: 44px; width: auto; display: block; }
-```
+- **不需引入 `project-info.js`**：內頁不做階段顯示，僅靠 `records.js` 渲染
 
 ### 用詞規範
 
@@ -193,57 +184,9 @@ CSS（各內頁獨立加入）：
 </div>
 ```
 
-### 新增日期紀錄範本
+### 新增日期紀錄
 
-**① 側邊索引 + 膠囊列各加一行（`data-month` 對應所屬月份）：**
-```html
-<!-- 側邊索引（.date-index 內） -->
-<a class="date-index-item" data-month="2026-04" href="#d20260412">04/12</a>
-
-<!-- 橫向膠囊列（.date-chips 內） -->
-<a class="date-chip" data-month="2026-04" href="#d20260412">04/12</a>
-```
-
-**② 對應月份的 `.month-section` 內加 `.date-group`：**
-```html
-<div class="date-group" id="d20260412">
-  <div class="date-heading">2026 / 04 / 12</div>
-
-  <div class="task-item">
-    <div class="task-title">{精簡標題}</div>
-    <div class="task-desc">{一句描述，句末含句號}</div>
-    <div class="task-images">
-      <div class="img-wrapper">
-        <img src="照片/20260412/{檔名}.jpg" alt="{工作項目名稱}">
-      </div>
-    </div>
-  </div>
-
-</div>
-```
-
-**錨點 ID 規則：** `d` + 日期數字，例如 `2026/04/12` → `id="d20260412"`
-
-### 新增月份範本
-
-```html
-<!-- sticky-header 月份 Tab 列加一顆按鈕 -->
-<button class="month-tab" data-month="2026-05">2026 / 05</button>
-
-<!-- 側邊索引加該月日期項目 -->
-<a class="date-index-item" data-month="2026-05" href="#d20260503">05/03</a>
-
-<!-- 橫向膠囊列加該月日期項目 -->
-<a class="date-chip" data-month="2026-05" href="#d20260503">05/03</a>
-
-<!-- main 內加新的 month-section（預設不顯示） -->
-<div class="month-section" data-month="2026-05" style="display:none">
-  <div class="date-group" id="d20260503">
-    <div class="date-heading">2026 / 05 / 03</div>
-    ...
-  </div>
-</div>
-```
+**只需在 `records.js` 新增物件**，月份 Tab、側邊索引、日期膠囊、內容全部自動生成，無需手寫任何 HTML。格式見「新增施工紀錄」章節。
 
 ---
 
@@ -255,26 +198,31 @@ CSS（各內頁獨立加入）：
 
 ---
 
-## 專案文件功能
+## 卡片底部按鈕功能
 
-主頁卡片底部的「📂 專案文件」按鈕，點擊後從畫面下方滑出底部抽屜（90% 高，不完全覆蓋主頁），顯示該專案的文件卡片。點擊文件卡片在全螢幕覆層中開啟 PDF 或圖片，關閉後回到抽屜。
+主頁卡片底部最多有兩顆按鈕並排（`.card-footer-btns`），均為外框樣式（`#2563EB` 邊框，`height: 48px`，膠囊圓角）：
 
-### 新增文件至專案
+| 按鈕 | 觸發條件 | 行為 |
+|------|----------|------|
+| 📋 專案紀錄 | `hasRecords: true` | 底部抽屜 iframe 載入 `{專案名稱}/index.html` |
+| 📂 專案文件 | `documents` 欄位存在 | 底部抽屜顯示文件卡片，點擊開啟全螢幕覆層 |
 
-在 `project-info.js` 的 `documents` 陣列中新增項目（可新增分類或在現有分類下加 files）。`file` 欄位填寫相對於**專案資料夾**的路徑，例如：
+### 專案紀錄抽屜（方案 B — iframe）
+
+點擊「📋 專案紀錄」→ 90vh 底部抽屜滑出，內部以 `<iframe>` 直接載入內頁。
+所有月份 Tab、日期導覽、Lightbox 功能由**內頁自帶**，主頁無需額外渲染邏輯。
+支援拖曳關閉（向下拖 > 120px）與 ESC 關閉。
+
+### 專案文件抽屜
+
+點擊「📂 專案文件」→ 底部抽屜顯示文件卡片。在 `project-info.js` 的 `documents` 陣列中新增項目。`file` 欄位填寫相對於**專案資料夾**的路徑，例如：
 
 ```js
 { name: '2026/03/19 專案進度檢討', desc: '大陸機械手臂專案進度檢討會議記錄。',
   file: '專案文件/會議記錄/會議記錄_20260319_大陸機械手臂專案進度檢討.pdf', type: 'pdf' }
 ```
 
-實際檔案須放在對應路徑（`{專案名稱}/專案文件/{分類}/`）。
-
-### 按鈕設計規範（年長使用者）
-
-- 全寬填色藍（`#2563EB`）膠囊按鈕，高度 ~48px，font-size 1rem
-- 位於 card-footer 獨立一行（日期在上、按鈕在下）
-- 無文件時不顯示按鈕；卡片本體點擊仍可導向施工紀錄內頁
+實際檔案須放在對應路徑（`{專案名稱}/專案文件/{分類}/`）。行動裝置 PDF 自動以新分頁開啟。
 
 ---
 
@@ -292,8 +240,37 @@ CSS（各內頁獨立加入）：
 
 ### 新增施工紀錄（必須同步更新 lastUpdate）
 
-新增 date-group 到內頁時，**必須同步更新 `project-info.js` 的 `lastUpdate` 為該施工日期**。
-主頁卡片「最新更新」日期以此為唯一來源，無法自動跨檔案讀取，故此為強制規範。
+**施工紀錄以 `records.js` 為唯一來源，不需修改內頁 `index.html`。**
+
+1. 在 `{專案名稱}/records.js` 陣列末尾新增日期物件（格式如下）
+2. 同步更新 `project-info.js` 的 `lastUpdate` 為該施工日期
+
+月份 Tab、日期膠囊、側邊索引、主頁抽屜全部自動生成，無需手動維護任何 HTML。
+
+#### records.js 新增日期格式
+
+```js
+{
+  month: 'YYYY-MM',          // 月份分組（如 '2026-05'）
+  date:  'YYYY-MM-DD',       // 完整日期（如 '2026-05-03'）
+  label: 'YYYY / MM / DD',   // 顯示用（如 '2026 / 05 / 03'）
+  tasks: [
+    {
+      title: '{精簡標題}',
+      sections: [
+        {
+          desc: '{一句描述，句末含句號}',
+          images: [
+            { src: '照片/YYYYMMDD/{檔名}.jpg', alt: '{工作項目名稱}' }
+          ]
+        }
+        // 一個 task 含多段描述時重複此物件
+      ]
+    }
+    // 同一日期多個工作項目時重複此物件
+  ]
+}
+```
 
 > Claude Code 執行新增紀錄任務時，應自動完成 `lastUpdate` 的同步更新，不需使用者另行交代。
 

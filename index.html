@@ -24,56 +24,17 @@
       align-items: center;
       justify-content: space-between;
     }
-    .site-logo {
-      height: 44px;
-      width: auto;
-      display: block;
-    }
+    .site-logo { height: 44px; width: auto; display: block; }
 
     /* ── Stats bar ── */
-    .stats {
-      background: #2563EB;
-      padding: 14px 40px;
-      display: flex;
-      gap: 32px;
-    }
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .stat-item .num {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #FFFFFF;
-      line-height: 1;
-    }
-    .stat-item .label {
-      font-size: 1rem;
-      color: #BFDBFE;
-      margin-top: 2px;
-    }
-    .stat-divider {
-      width: 1px;
-      background: rgba(255,255,255,0.3);
-      align-self: stretch;
-    }
+    .stats { background: #2563EB; padding: 14px 40px; display: flex; gap: 32px; }
+    .stat-item { display: flex; flex-direction: column; align-items: center; }
+    .stat-item .num { font-size: 1.5rem; font-weight: 700; color: #FFFFFF; line-height: 1; }
+    .stat-item .label { font-size: 1rem; color: #BFDBFE; margin-top: 2px; }
+    .stat-divider { width: 1px; background: rgba(255,255,255,0.3); align-self: stretch; }
 
     /* ── Main content ── */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 36px 40px;
-    }
-    .section-title {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: #7A6E63;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-
+    main { max-width: 1100px; margin: 0 auto; padding: 36px 40px; }
     /* ── Project grid ── */
     .project-grid {
       display: grid;
@@ -87,311 +48,178 @@
       border-radius: 10px;
       padding: 32px;
       display: block;
-      cursor: pointer;
-      transition: box-shadow 0.15s, border-color 0.15s;
-    }
-    .project-card:hover {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-      border-color: #2563EB;
     }
 
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-    .card-title {
-      font-size: 1.375rem;
-      font-weight: 600;
-      color: #1A1A1A;
-      line-height: 1.4;
-      flex: 1;
-      margin-right: 12px;
-    }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+    .card-title { font-size: 1.375rem; font-weight: 600; color: #1A1A1A; line-height: 1.4; flex: 1; margin-right: 12px; }
 
     /* Status badges */
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 12px;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      white-space: nowrap;
-      flex-shrink: 0;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 12px; border-radius: 9999px;
+      font-size: 0.875rem; font-weight: 600;
+      white-space: nowrap; flex-shrink: 0;
     }
-    .badge::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-    }
-    .badge-active {
-      background: #FEF3C7;
-      color: #92400E;
-    }
-    .badge-active::before { background: #F59E0B; }
-    .badge-done {
-      background: #D1FAE5;
-      color: #065F46;
-    }
+    .badge::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
+    .badge-done { background: #D1FAE5; color: #065F46; }
     .badge-done::before { background: #10B981; }
-    .badge-paused {
-      background: #FEE2E2;
-      color: #991B1B;
-    }
+    .badge-paused { background: #FEE2E2; color: #991B1B; }
     .badge-paused::before { background: #EF4444; }
 
-    /* 階段進度標題列 */
-    .card-info {
-      margin-bottom: 14px;
-    }
-    .card-phase-title {
-      font-size: 1rem;
-      color: #5C4E43;
-      font-weight: 500;
-    }
+    /* 階段進度 */
+    .card-info { margin-bottom: 14px; }
+    .card-phase-title { font-size: 1rem; color: #5C4E43; font-weight: 500; }
 
-    /* 時間軸進度條 */
-    .card-timeline {
-      margin-bottom: 14px;
-    }
-    .timeline-label {
-      font-size: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
+    .card-timeline { margin-bottom: 14px; }
+    .timeline-label { font-size: 1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
     .timeline-dates { color: #7A6E63; }
-    .timeline-pct   { font-weight: 600; color: #2563EB; }
-    .timeline-bar {
-      height: 9px;
-      background: #EDE8E0;
-      border-radius: 9999px;
-      overflow: hidden;
-    }
-    .timeline-fill {
-      height: 100%;
-      background: #2563EB;
-      border-radius: 9999px;
-      width: 0%;
-      transition: width 0.4s ease;
-    }
+    .timeline-pct { font-weight: 600; color: #2563EB; }
+    .timeline-bar { height: 9px; background: #EDE8E0; border-radius: 9999px; overflow: hidden; }
+    .timeline-fill { height: 100%; background: #2563EB; border-radius: 9999px; width: 0%; transition: width 0.4s ease; }
 
     /* 階段膠囊列 */
     .card-phase { margin-bottom: 16px; }
-    .phase-steps {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
+    .phase-steps { display: flex; flex-wrap: wrap; gap: 6px; }
     .phase-step {
-      font-size: 1rem;
-      padding: 5px 15px;
-      border-radius: 9999px;
-      border: 2px solid #D4C9BC;
-      color: #7A6E63;
-      background: transparent;
-      white-space: nowrap;
-      cursor: pointer;
-      font-family: inherit;
+      font-size: 1rem; padding: 5px 15px; border-radius: 9999px;
+      border: 2px solid #D4C9BC; color: #7A6E63; background: transparent;
+      white-space: nowrap; cursor: pointer; font-family: inherit;
       transition: background 0.15s, border-color 0.15s, color 0.15s;
     }
-    .phase-step.done {
-      background: #D1FAE5;
-      border-color: #A7F3D0;
-      color: #065F46;
-    }
+    .phase-step.done { background: #D1FAE5; border-color: #A7F3D0; color: #065F46; }
     .phase-step.active {
-      background: #2563EB;
-      border-color: #2563EB;
-      color: #fff;
-      font-weight: 600;
+      background: #2563EB; border-color: #2563EB; color: #fff; font-weight: 600;
       animation: phase-glow 2s ease-in-out infinite;
     }
-    .phase-step.selected {
-      border: 2px solid #F59E0B;
-      background: #FEF3C7;
-      color: #92400E;
-    }
+    .phase-step.selected { border: 2px solid #F59E0B; background: #FEF3C7; color: #92400E; }
     @keyframes phase-glow {
       0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.5); }
       50%       { box-shadow: 0 0 0 5px rgba(37,99,235,0); }
     }
 
-    .card-footer {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding-top: 14px;
-      border-top: 1px solid #EDE8E0;
-    }
-    .card-meta {
-      font-size: 1rem;
-      color: #7A6E63;
-    }
-    .card-docs-btn {
-      width: 100%;
-      background: #2563EB;
-      color: #fff;
-      border: none;
-      border-radius: 9999px;
-      padding: 12px 0;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      letter-spacing: 0.02em;
+    /* Card footer */
+    .card-footer { display: flex; flex-direction: column; gap: 12px; padding-top: 14px; border-top: 1px solid #EDE8E0; }
+    .card-meta { font-size: 1rem; color: #7A6E63; }
+
+    /* 按鈕列（施工紀錄 + 專案文件並排）*/
+    .card-footer-btns { display: flex; gap: 10px; }
+    .card-rec-btn, .card-docs-btn {
+      flex: 1; height: 48px; border-radius: 9999px;
+      border: 1.5px solid #2563EB; background: transparent;
+      color: #2563EB; font-size: 1rem; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
       transition: background 0.15s;
     }
-    .card-docs-btn:hover { background: #1D4ED8; }
+    .card-rec-btn:hover, .card-docs-btn:hover { background: #EFF6FF; }
+    .btn-icon { font-size: 1.375rem; line-height: 1; }
 
     /* ── 專案文件底部抽屜 ── */
     .doc-backdrop {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.4);
-      z-index: 100;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+      z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
-    .doc-backdrop.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .doc-backdrop.open { opacity: 1; pointer-events: auto; }
     .doc-sheet {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 90vh;
-      background: #FDFAF6;
-      border-radius: 16px 16px 0 0;
-      z-index: 101;
-      display: flex;
-      flex-direction: column;
-      transform: translateY(100%);
-      transition: transform 0.3s ease;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      height: 90vh; background: #FDFAF6;
+      border-radius: 16px 16px 0 0; z-index: 101;
+      display: flex; flex-direction: column;
+      transform: translateY(100%); transition: transform 0.3s ease;
       box-shadow: 0 -4px 32px rgba(0,0,0,0.12);
     }
-    .doc-sheet.open {
-      transform: translateY(0);
-    }
+    .doc-sheet.open { transform: translateY(0); }
     .doc-sheet-handle {
-      width: 32px; height: 4px;
-      background: #D4C9BC;
-      border-radius: 9999px;
-      margin: 12px auto 0;
-      flex-shrink: 0;
-      cursor: grab;
+      width: 32px; height: 4px; background: #D4C9BC;
+      border-radius: 9999px; margin: 12px auto 0; flex-shrink: 0; cursor: grab;
     }
     .doc-sheet-header {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding: 12px 20px;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: flex-end;
+      padding: 12px 20px; flex-shrink: 0;
     }
     .doc-close-btn {
-      height: 44px;
-      padding: 0 16px;
-      border-radius: 9999px;
-      border: 1.5px solid #D4C9BC;
-      background: transparent;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #1A1A1A;
-      cursor: pointer;
+      height: 44px; padding: 0 16px; border-radius: 9999px;
+      border: 1.5px solid #D4C9BC; background: transparent;
+      font-size: 1rem; font-weight: 600; color: #1A1A1A; cursor: pointer;
       display: flex; align-items: center; gap: 6px;
-      font-family: inherit;
-      flex-shrink: 0;
-      white-space: nowrap;
+      font-family: inherit; flex-shrink: 0; white-space: nowrap;
     }
     .doc-close-btn:hover { background: #EDE8E0; border-color: #B8AFA6; }
-    .doc-sheet-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px 0 24px;
-    }
+    .doc-sheet-body { flex: 1; overflow-y: auto; padding: 8px 0 24px; }
     .doc-category-header {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #5C4E43;
-      letter-spacing: 0.02em;
-      padding: 20px 24px 12px;
-      border-bottom: 1px solid #E8E0D4;
-      margin-bottom: 16px;
+      font-size: 1.25rem; font-weight: 700; color: #5C4E43;
+      letter-spacing: 0.02em; padding: 20px 24px 12px;
+      border-bottom: 1px solid #E8E0D4; margin-bottom: 16px;
     }
-    .doc-grid-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      padding: 0 24px;
-    }
+    .doc-grid-row { display: flex; flex-wrap: wrap; gap: 16px; padding: 0 24px; }
     .doc-card {
-      background: #F5F0E8;
-      border: 1px solid #E8E0D4;
-      border-radius: 10px;
-      padding: 20px 16px;
-      width: 160px;
-      text-align: center;
-      cursor: pointer;
+      background: #F5F0E8; border: 1px solid #E8E0D4;
+      border-radius: 10px; padding: 20px 16px; width: 160px;
+      text-align: center; cursor: pointer;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .doc-card:hover {
-      border-color: #2563EB;
-      box-shadow: 0 4px 16px rgba(37,99,235,0.1);
-    }
+    .doc-card:hover { border-color: #2563EB; box-shadow: 0 4px 16px rgba(37,99,235,0.1); }
     .doc-card-icon { font-size: 2.5rem; margin-bottom: 8px; }
     .doc-card-name { font-size: 1rem; font-weight: 600; color: #1A1A1A; line-height: 1.4; }
     .doc-card-desc { font-size: 1rem; color: #7A6E63; margin-top: 6px; line-height: 1.5; }
 
     /* ── 全螢幕文件覆層 ── */
     .doc-viewer-overlay {
-      position: fixed; inset: 0;
-      z-index: 200;
-      background: rgba(0,0,0,0.85);
-      display: flex;
-      flex-direction: column;
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.85); display: flex; flex-direction: column;
     }
     .doc-viewer-bar {
-      height: 52px;
-      background: rgba(0,0,0,0.6);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      flex-shrink: 0;
+      height: 52px; background: rgba(0,0,0,0.6);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; flex-shrink: 0;
     }
-    .doc-viewer-name {
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 500;
-    }
+    .doc-viewer-name { color: #fff; font-size: 1rem; font-weight: 500; }
     .doc-viewer-close {
-      color: #fff;
-      background: rgba(255,255,255,0.15);
+      color: #fff; background: rgba(255,255,255,0.15);
       border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 6px;
-      padding: 5px 14px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      font-family: inherit;
+      border-radius: 6px; padding: 5px 14px;
+      font-size: 0.9rem; cursor: pointer; font-family: inherit;
     }
     .doc-viewer-close:hover { background: rgba(255,255,255,0.25); }
-    .doc-viewer-content {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .doc-viewer-content { flex: 1; display: flex; align-items: center; justify-content: center; }
+    .doc-viewer-content iframe { width: 100%; height: 100%; border: none; }
+    .doc-viewer-content img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+    /* ── 施工紀錄底部抽屜（z-index 300+，高於文件抽屜）── */
+    .rec-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+      z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
-    .doc-viewer-content iframe {
-      width: 100%; height: 100%; border: none;
+    .rec-backdrop.open { opacity: 1; pointer-events: auto; }
+    .rec-sheet {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      height: 90vh; background: #FDFAF6;
+      border-radius: 16px 16px 0 0; z-index: 301;
+      display: flex; flex-direction: column;
+      transform: translateY(100%); transition: transform 0.3s ease;
+      box-shadow: 0 -4px 32px rgba(0,0,0,0.12);
     }
-    .doc-viewer-content img {
-      max-width: 100%; max-height: 100%; object-fit: contain;
+    .rec-sheet.open { transform: translateY(0); }
+    .rec-sheet-handle {
+      width: 32px; height: 4px; background: #D4C9BC;
+      border-radius: 9999px; margin: 12px auto 0; flex-shrink: 0; cursor: grab;
     }
+    .rec-sheet-header {
+      display: flex; align-items: center; justify-content: flex-end;
+      padding: 12px 20px 0; flex-shrink: 0;
+    }
+    .rec-close-btn {
+      height: 44px; padding: 0 16px; border-radius: 9999px;
+      border: 1.5px solid #D4C9BC; background: transparent;
+      font-size: 1rem; font-weight: 600; color: #1A1A1A; cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      font-family: inherit; flex-shrink: 0; white-space: nowrap;
+    }
+    .rec-close-btn:hover { background: #EDE8E0; border-color: #B8AFA6; }
+
+    /* 抽屜主內容（iframe）*/
+    .rec-sheet-body { flex: 1; overflow: hidden; }
+    .rec-frame { width: 100%; height: 100%; border: none; display: block; }
   </style>
 </head>
 <body>
@@ -421,7 +249,7 @@
     <div class="project-grid"></div>
   </main>
 
-  <!-- 底部抽屜 -->
+  <!-- 專案文件底部抽屜 -->
   <div id="doc-backdrop" class="doc-backdrop"></div>
   <div id="doc-sheet" class="doc-sheet">
     <div class="doc-sheet-handle"></div>
@@ -440,10 +268,22 @@
     <div id="doc-viewer-content" class="doc-viewer-content"></div>
   </div>
 
+  <!-- 施工紀錄底部抽屜 -->
+  <div id="rec-backdrop" class="rec-backdrop"></div>
+  <div id="rec-sheet" class="rec-sheet">
+    <div class="rec-sheet-handle"></div>
+    <div class="rec-sheet-header">
+      <button id="rec-close-btn" class="rec-close-btn" aria-label="關閉">✕ 關閉</button>
+    </div>
+    <div class="rec-sheet-body">
+      <iframe id="rec-frame" class="rec-frame" src="" title="施工紀錄"></iframe>
+    </div>
+  </div>
+
   <script src="大陸蘇州機械手臂/project-info.js"></script>
   <script>
     // ── 統計計數 ──
-    let _total = 0, _done = 0, _paused = 0;
+    var _total = 0, _done = 0, _paused = 0;
     function updateStats() {
       document.getElementById('stat-total').textContent  = _total;
       document.getElementById('stat-active').textContent = _total - _done - _paused;
@@ -452,158 +292,148 @@
 
     // ── 依今日日期自動偵測當前階段 index ──
     function detectCurrentPhase(phases) {
-      const now = new Date(); now.setHours(0, 0, 0, 0);
-      const first = new Date(phases[0].start); first.setHours(0, 0, 0, 0);
+      var now = new Date(); now.setHours(0, 0, 0, 0);
+      var first = new Date(phases[0].start); first.setHours(0, 0, 0, 0);
       if (now < first) return 0;
-      for (let i = 0; i < phases.length; i++) {
-        const s = new Date(phases[i].start); s.setHours(0, 0, 0, 0);
-        const e = new Date(phases[i].end);   e.setHours(0, 0, 0, 0);
+      for (var i = 0; i < phases.length; i++) {
+        var s = new Date(phases[i].start); s.setHours(0, 0, 0, 0);
+        var e = new Date(phases[i].end);   e.setHours(0, 0, 0, 0);
         if (now >= s && now <= e) return i;
         if (i < phases.length - 1) {
-          const ns = new Date(phases[i + 1].start); ns.setHours(0, 0, 0, 0);
+          var ns = new Date(phases[i + 1].start); ns.setHours(0, 0, 0, 0);
           if (now > e && now < ns) return i + 1;
         }
       }
       return phases.length - 1;
     }
 
-    // ── 工具函式 ──
     function calcPhasePct(phase) {
-      const start = new Date(phase.start); start.setHours(0, 0, 0, 0);
-      const end   = new Date(phase.end);   end.setHours(0, 0, 0, 0);
-      const now   = new Date();            now.setHours(0, 0, 0, 0);
+      var start = new Date(phase.start); start.setHours(0, 0, 0, 0);
+      var end   = new Date(phase.end);   end.setHours(0, 0, 0, 0);
+      var now   = new Date();            now.setHours(0, 0, 0, 0);
       if (now < start) return 0;
       if (now >= end)  return 100;
       return Math.min(100, Math.max(0, (now - start) / (end - start) * 100));
     }
 
     function fmtDate(dateStr) {
-      const d = new Date(dateStr);
+      var d = new Date(dateStr);
       return (d.getMonth() + 1) + '/' + d.getDate();
     }
 
     function updatePhaseDisplay(key, data, idx) {
-      const phase = data.phases[idx];
-      const titleEl = document.getElementById('card-phase-title-' + key);
+      var phase = data.phases[idx];
+      var titleEl = document.getElementById('card-phase-title-' + key);
       if (titleEl) titleEl.textContent = '進度：' + phase.title;
-      const tl = document.getElementById('card-timeline-' + key);
+      var tl = document.getElementById('card-timeline-' + key);
       if (tl) {
-        const start = new Date(phase.start); start.setHours(0, 0, 0, 0);
-        const now   = new Date();            now.setHours(0, 0, 0, 0);
-        const pct   = calcPhasePct(phase);
+        var start = new Date(phase.start); start.setHours(0, 0, 0, 0);
+        var now   = new Date();            now.setHours(0, 0, 0, 0);
+        var pct   = calcPhasePct(phase);
         tl.querySelector('.timeline-dates').textContent = fmtDate(phase.start) + ' ─── ' + fmtDate(phase.end);
-        const pctEl = tl.querySelector('.timeline-pct');
+        var pctEl = tl.querySelector('.timeline-pct');
         pctEl.textContent = Math.round(pct) + '%';
         pctEl.style.color = now < start ? '#7A6E63' : '#2563EB';
         tl.querySelector('.timeline-fill').style.width = pct.toFixed(1) + '%';
       }
     }
 
-    // ── 主函式：建立卡片 + 綁定事件 ──
-    // badgeClass: 'badge-done' | 'badge-paused' | 未傳入（進行中）
+    // ── 主函式：建立卡片 ──
     function renderProject(key, data, badgeClass) {
-      // 統計
       _total++;
       if (badgeClass === 'badge-done')   _done++;
       if (badgeClass === 'badge-paused') _paused++;
       updateStats();
 
-      // 建立卡片 HTML
-      const href = key + '/index.html';
-      const badgeLabel = { 'badge-done': '已完成', 'badge-paused': '暫停' };
-      const badgeHtml  = badgeClass
-        ? `<span class="badge ${badgeClass}">${badgeLabel[badgeClass]}</span>`
+      var badgeLabel = { 'badge-done': '已完成', 'badge-paused': '暫停' };
+      var badgeHtml  = badgeClass
+        ? '<span class="badge ' + badgeClass + '">' + badgeLabel[badgeClass] + '</span>'
         : '';
 
-      const card = document.createElement('div');
-      card.className    = 'project-card';
-      card.id           = 'project-card-' + key;
-      card.dataset.href = href;
-      card.innerHTML = `
-        <div class="card-top">
-          <span class="card-title">${key}</span>${badgeHtml}
-        </div>
-        <div class="card-info">
-          <span class="card-phase-title" id="card-phase-title-${key}"></span>
-        </div>
-        <div class="card-timeline" id="card-timeline-${key}">
-          <div class="timeline-label">
-            <span class="timeline-dates"></span>
-            <span class="timeline-pct">--%</span>
-          </div>
-          <div class="timeline-bar"><div class="timeline-fill"></div></div>
-        </div>
-        <div class="card-phase">
-          <div class="phase-steps" id="card-phases-${key}"></div>
-        </div>
-        <div class="card-footer">
-          <span class="card-meta" id="card-update-${key}"></span>
-          ${data.documents && data.documents.length
-            ? `<button class="card-docs-btn">📂　專案文件</button>`
-            : ''}
-        </div>
-      `;
+      var hasRec  = !!data.hasRecords;
+      var hasDocs = !!(data.documents && data.documents.length);
+      var btnsHtml = '';
+      if (hasRec || hasDocs) {
+        btnsHtml = '<div class="card-footer-btns">';
+        if (hasRec)  btnsHtml += '<button class="card-rec-btn"><span class="btn-icon">📋</span>專案紀錄</button>';
+        if (hasDocs) btnsHtml += '<button class="card-docs-btn"><span class="btn-icon">📂</span>專案文件</button>';
+        btnsHtml += '</div>';
+      }
+
+      var card = document.createElement('div');
+      card.className = 'project-card';
+      card.id        = 'project-card-' + key;
+      card.innerHTML =
+        '<div class="card-top">' +
+          '<span class="card-title">' + key + '</span>' + badgeHtml +
+        '</div>' +
+        '<div class="card-info">' +
+          '<span class="card-phase-title" id="card-phase-title-' + key + '"></span>' +
+        '</div>' +
+        '<div class="card-timeline" id="card-timeline-' + key + '">' +
+          '<div class="timeline-label">' +
+            '<span class="timeline-dates"></span>' +
+            '<span class="timeline-pct">--%</span>' +
+          '</div>' +
+          '<div class="timeline-bar"><div class="timeline-fill"></div></div>' +
+        '</div>' +
+        '<div class="card-phase">' +
+          '<div class="phase-steps" id="card-phases-' + key + '"></div>' +
+        '</div>' +
+        '<div class="card-footer">' +
+          '<span class="card-meta" id="card-update-' + key + '"></span>' +
+          btnsHtml +
+        '</div>';
+
       document.querySelector('.project-grid').appendChild(card);
 
-      // 最新更新
       document.getElementById('card-update-' + key).textContent = '最新更新：' + data.lastUpdate;
 
-      // 自動偵測當前階段
-      const currentIdx = detectCurrentPhase(data.phases);
-
-      // 階段膠囊
-      const ps = document.getElementById('card-phases-' + key);
-      ps.innerHTML = data.phases.map((phase, i) => {
-        let cls = 'phase-step';
-        if (i < currentIdx)  cls += ' done';
+      var currentIdx = detectCurrentPhase(data.phases);
+      var ps = document.getElementById('card-phases-' + key);
+      ps.innerHTML = data.phases.map(function(phase, i) {
+        var cls = 'phase-step';
+        if (i < currentIdx)   cls += ' done';
         if (i === currentIdx) cls += ' active';
-        return `<button class="${cls}" data-index="${i}">${phase.name}</button>`;
+        return '<button class="' + cls + '" data-index="' + i + '">' + phase.name + '</button>';
       }).join('');
 
       ps.addEventListener('click', function(e) {
-        const btn = e.target.closest('button.phase-step');
+        var btn = e.target.closest('button.phase-step');
         if (!btn) return;
         e.stopPropagation();
-        const idx = parseInt(btn.dataset.index, 10);
-        ps.querySelectorAll('.phase-step').forEach(b => b.classList.remove('selected'));
+        var idx = parseInt(btn.dataset.index, 10);
+        ps.querySelectorAll('.phase-step').forEach(function(b) { b.classList.remove('selected'); });
         if (idx !== currentIdx) btn.classList.add('selected');
         updatePhaseDisplay(key, data, idx);
       });
-
-      // 預設顯示當前進行中階段
       updatePhaseDisplay(key, data, currentIdx);
 
-      // 專案文件按鈕
-      const docsBtn = card.querySelector('.card-docs-btn');
-      if (docsBtn) {
-        docsBtn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          openDocSheet(key, data.documents);
-        });
-      }
+      // 施工紀錄按鈕
+      var recBtn = card.querySelector('.card-rec-btn');
+      if (recBtn) recBtn.addEventListener('click', function() { openRecSheet(key); });
 
-      // 卡片整體可點
-      card.addEventListener('click', function(e) {
-        if (e.target.closest('button') || e.target.closest('a')) return;
-        window.location.href = href;
-      });
+      // 專案文件按鈕
+      var docsBtn = card.querySelector('.card-docs-btn');
+      if (docsBtn) docsBtn.addEventListener('click', function() { openDocSheet(key, data.documents); });
+
     }
 
     // ── 專案文件底部抽屜 ──
     function openDocSheet(key, docs) {
-      const body = document.getElementById('doc-sheet-body');
+      var body = document.getElementById('doc-sheet-body');
       body.innerHTML = '';
       docs.forEach(function(cat) {
-        const header = document.createElement('div');
+        var header = document.createElement('div');
         header.className = 'doc-category-header';
         header.textContent = cat.category;
         body.appendChild(header);
-        const row = document.createElement('div');
+        var row = document.createElement('div');
         row.className = 'doc-grid-row';
         cat.files.forEach(function(doc) {
-          const card = document.createElement('div');
+          var card = document.createElement('div');
           card.className = 'doc-card';
-          const icon = doc.type === 'pdf' ? '📄' : '🖼️';
+          var icon = doc.type === 'pdf' ? '📄' : '🖼️';
           card.innerHTML =
             '<div class="doc-card-icon">' + icon + '</div>' +
             '<div class="doc-card-name">' + doc.name + '</div>' +
@@ -618,7 +448,7 @@
     }
 
     function closeDocSheet() {
-      const sheet = document.getElementById('doc-sheet');
+      var sheet = document.getElementById('doc-sheet');
       sheet.style.transition = 'transform 0.3s ease';
       sheet.style.transform = '';
       document.getElementById('doc-backdrop').classList.remove('open');
@@ -629,25 +459,19 @@
     }
 
     function openDocViewer(key, doc) {
-      const path = key + '/' + doc.file;
-      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
-
-      if (doc.type === 'pdf' && isMobile) {
-        window.open(path, '_blank');
-        return;
-      }
-
+      var path = key + '/' + doc.file;
+      var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
+      if (doc.type === 'pdf' && isMobile) { window.open(path, '_blank'); return; }
       document.getElementById('doc-viewer-name').textContent = doc.name;
-      const content = document.getElementById('doc-viewer-content');
+      var content = document.getElementById('doc-viewer-content');
       content.innerHTML = '';
       if (doc.type === 'pdf') {
-        const frame = document.createElement('iframe');
+        var frame = document.createElement('iframe');
         frame.src = path;
         content.appendChild(frame);
       } else {
-        const img = document.createElement('img');
-        img.src = path;
-        img.alt = doc.name;
+        var img = document.createElement('img');
+        img.src = path; img.alt = doc.name;
         content.appendChild(img);
       }
       document.getElementById('doc-viewer-overlay').style.display = 'flex';
@@ -658,82 +482,109 @@
       document.getElementById('doc-viewer-content').innerHTML = '';
     }
 
-    // ── 抽屜拖曳關閉 ──
+    // ── 施工紀錄抽屜 ──
+    var recSheet    = document.getElementById('rec-sheet');
+    var recBackdrop = document.getElementById('rec-backdrop');
+
+    function openRecSheet(key) {
+      document.getElementById('rec-frame').src = key + '/index.html';
+      recBackdrop.classList.add('open');
+      recSheet.style.transition = 'transform 0.3s ease';
+      recSheet.style.transform = '';
+      recSheet.classList.add('open');
+    }
+
+    function closeRecSheet() {
+      recSheet.style.transition = 'transform 0.3s ease';
+      recSheet.style.transform = '';
+      recBackdrop.classList.remove('open');
+      recSheet.classList.remove('open');
+      setTimeout(function() {
+        document.getElementById('rec-frame').src = '';
+      }, 300);
+    }
+
+    // ── 拖曳關閉：文件抽屜 ──
     (function() {
-      var sheet = document.getElementById('doc-sheet');
-      var handle = sheet.querySelector('.doc-sheet-handle');
-      var header = sheet.querySelector('.doc-sheet-header');
-      var dragging = false;
-      var startY = 0;
-      var currentDelta = 0;
-      var THRESHOLD = 120; // px，超過此距離才關閉
+      var sheet   = document.getElementById('doc-sheet');
+      var handle  = sheet.querySelector('.doc-sheet-handle');
+      var hdr     = sheet.querySelector('.doc-sheet-header');
+      var dragging = false, startY = 0, currentDelta = 0, THRESHOLD = 120;
 
       function dragStart(clientY) {
         if (!sheet.classList.contains('open')) return;
-        dragging = true;
-        startY = clientY;
-        currentDelta = 0;
+        dragging = true; startY = clientY; currentDelta = 0;
         sheet.style.transition = 'none';
       }
-
       function dragMove(clientY) {
         if (!dragging) return;
-        var delta = clientY - startY;
-        if (delta < 0) delta = 0; // 禁止向上拖
+        var delta = Math.max(0, clientY - startY);
         currentDelta = delta;
         sheet.style.transform = 'translateY(' + delta + 'px)';
       }
-
       function dragEnd() {
         if (!dragging) return;
         dragging = false;
         sheet.style.transition = 'transform 0.3s ease';
-        if (currentDelta >= THRESHOLD) {
-          // 達閾值：繼續滑走後關閉
-          sheet.style.transform = 'translateY(100%)';
-          setTimeout(closeDocSheet, 300);
-        } else {
-          // 未達閾值：彈回
-          sheet.style.transform = 'translateY(0)';
-        }
+        if (currentDelta >= THRESHOLD) { sheet.style.transform = 'translateY(100%)'; setTimeout(closeDocSheet, 300); }
+        else sheet.style.transform = 'translateY(0)';
       }
-
-      // 觸控事件
-      [handle, header].forEach(function(el) {
-        el.addEventListener('touchstart', function(e) {
-          dragStart(e.touches[0].clientY);
-        }, { passive: true });
+      [handle, hdr].forEach(function(el) {
+        el.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY); }, { passive: true });
+        el.addEventListener('mousedown', function(e) { dragStart(e.clientY); e.preventDefault(); });
       });
-      document.addEventListener('touchmove', function(e) {
-        if (!dragging) return;
-        dragMove(e.touches[0].clientY);
-      }, { passive: true });
+      document.addEventListener('touchmove', function(e) { if (dragging) dragMove(e.touches[0].clientY); }, { passive: true });
       document.addEventListener('touchend', function() { dragEnd(); });
-
-      // 滑鼠事件（桌機）
-      [handle, header].forEach(function(el) {
-        el.addEventListener('mousedown', function(e) {
-          dragStart(e.clientY);
-          e.preventDefault();
-        });
-      });
-      document.addEventListener('mousemove', function(e) {
-        if (!dragging) return;
-        dragMove(e.clientY);
-      });
+      document.addEventListener('mousemove', function(e) { if (dragging) dragMove(e.clientY); });
       document.addEventListener('mouseup', function() { dragEnd(); });
     })();
 
-    // 事件綁定
+    // ── 拖曳關閉：施工紀錄抽屜 ──
+    (function() {
+      var handle  = recSheet.querySelector('.rec-sheet-handle');
+      var hdr     = recSheet.querySelector('.rec-sheet-header');
+      var dragging = false, startY = 0, currentDelta = 0, THRESHOLD = 120;
+
+      function dragStart(clientY) {
+        if (!recSheet.classList.contains('open')) return;
+        dragging = true; startY = clientY; currentDelta = 0;
+        recSheet.style.transition = 'none';
+      }
+      function dragMove(clientY) {
+        if (!dragging) return;
+        var delta = Math.max(0, clientY - startY);
+        currentDelta = delta;
+        recSheet.style.transform = 'translateY(' + delta + 'px)';
+      }
+      function dragEnd() {
+        if (!dragging) return;
+        dragging = false;
+        recSheet.style.transition = 'transform 0.3s ease';
+        if (currentDelta >= THRESHOLD) { recSheet.style.transform = 'translateY(100%)'; setTimeout(closeRecSheet, 300); }
+        else recSheet.style.transform = 'translateY(0)';
+      }
+      [handle, hdr].forEach(function(el) {
+        el.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY); }, { passive: true });
+        el.addEventListener('mousedown', function(e) { dragStart(e.clientY); e.preventDefault(); });
+      });
+      document.addEventListener('touchmove', function(e) { if (dragging) dragMove(e.touches[0].clientY); }, { passive: true });
+      document.addEventListener('touchend', function() { dragEnd(); });
+      document.addEventListener('mousemove', function(e) { if (dragging) dragMove(e.clientY); });
+      document.addEventListener('mouseup', function() { dragEnd(); });
+    })();
+
+    // ── 事件綁定 ──
     document.getElementById('doc-backdrop').addEventListener('click', closeDocSheet);
     document.getElementById('doc-close-btn').addEventListener('click', closeDocSheet);
     document.getElementById('doc-viewer-close').addEventListener('click', closeDocViewer);
+    recBackdrop.addEventListener('click', closeRecSheet);
+    document.getElementById('rec-close-btn').addEventListener('click', closeRecSheet);
+
     document.addEventListener('keydown', function(e) {
-      if (e.key !== 'Escape') return;
-      if (document.getElementById('doc-viewer-overlay').style.display !== 'none') {
-        closeDocViewer();
-      } else if (document.getElementById('doc-sheet').classList.contains('open')) {
-        closeDocSheet();
+      if (e.key === 'Escape') {
+        if (recSheet.classList.contains('open')) { closeRecSheet(); return; }
+        if (document.getElementById('doc-viewer-overlay').style.display !== 'none') { closeDocViewer(); return; }
+        if (document.getElementById('doc-sheet').classList.contains('open')) { closeDocSheet(); }
       }
     });
 
