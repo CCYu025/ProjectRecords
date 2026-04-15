@@ -617,7 +617,8 @@
           }
         }
       }
-      document.getElementById('inner-phase').textContent = phases[idx].name;
+      const phaseEl = document.getElementById('inner-phase');
+      if (phaseEl) phaseEl.textContent = phases[idx].name;
     })();
   </script>
 

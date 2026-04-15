@@ -284,6 +284,7 @@
       border-radius: 9999px;
       margin: 12px auto 0;
       flex-shrink: 0;
+      cursor: grab;
     }
     .doc-sheet-header {
       display: flex;
@@ -617,8 +618,11 @@
     }
 
     function closeDocSheet() {
+      const sheet = document.getElementById('doc-sheet');
+      sheet.style.transition = 'transform 0.3s ease';
+      sheet.style.transform = '';
       document.getElementById('doc-backdrop').classList.remove('open');
-      document.getElementById('doc-sheet').classList.remove('open');
+      sheet.classList.remove('open');
       setTimeout(function() {
         document.getElementById('doc-sheet-body').innerHTML = '';
       }, 300);
@@ -653,6 +657,72 @@
       document.getElementById('doc-viewer-overlay').style.display = 'none';
       document.getElementById('doc-viewer-content').innerHTML = '';
     }
+
+    // ── 抽屜拖曳關閉 ──
+    (function() {
+      var sheet = document.getElementById('doc-sheet');
+      var handle = sheet.querySelector('.doc-sheet-handle');
+      var header = sheet.querySelector('.doc-sheet-header');
+      var dragging = false;
+      var startY = 0;
+      var currentDelta = 0;
+      var THRESHOLD = 120; // px，超過此距離才關閉
+
+      function dragStart(clientY) {
+        if (!sheet.classList.contains('open')) return;
+        dragging = true;
+        startY = clientY;
+        currentDelta = 0;
+        sheet.style.transition = 'none';
+      }
+
+      function dragMove(clientY) {
+        if (!dragging) return;
+        var delta = clientY - startY;
+        if (delta < 0) delta = 0; // 禁止向上拖
+        currentDelta = delta;
+        sheet.style.transform = 'translateY(' + delta + 'px)';
+      }
+
+      function dragEnd() {
+        if (!dragging) return;
+        dragging = false;
+        sheet.style.transition = 'transform 0.3s ease';
+        if (currentDelta >= THRESHOLD) {
+          // 達閾值：繼續滑走後關閉
+          sheet.style.transform = 'translateY(100%)';
+          setTimeout(closeDocSheet, 300);
+        } else {
+          // 未達閾值：彈回
+          sheet.style.transform = 'translateY(0)';
+        }
+      }
+
+      // 觸控事件
+      [handle, header].forEach(function(el) {
+        el.addEventListener('touchstart', function(e) {
+          dragStart(e.touches[0].clientY);
+        }, { passive: true });
+      });
+      document.addEventListener('touchmove', function(e) {
+        if (!dragging) return;
+        dragMove(e.touches[0].clientY);
+      }, { passive: true });
+      document.addEventListener('touchend', function() { dragEnd(); });
+
+      // 滑鼠事件（桌機）
+      [handle, header].forEach(function(el) {
+        el.addEventListener('mousedown', function(e) {
+          dragStart(e.clientY);
+          e.preventDefault();
+        });
+      });
+      document.addEventListener('mousemove', function(e) {
+        if (!dragging) return;
+        dragMove(e.clientY);
+      });
+      document.addEventListener('mouseup', function() { dragEnd(); });
+    })();
 
     // 事件綁定
     document.getElementById('doc-backdrop').addEventListener('click', closeDocSheet);
