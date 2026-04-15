@@ -300,3 +300,25 @@ node {專案名稱}/generate_pdf.js
 ```
 
 輸出格式：A4 橫向，每張 task-item 一頁，左欄標題 35% / 右欄圖片 65%。
+
+---
+
+## 行動端觸控規範（已修正的已知問題）
+
+### 主頁抽屜拖曳關閉（`index.html`）
+
+- **`body` overscroll 鎖定**：抽屜開啟時設 `document.body.style.overscrollBehavior = 'none'`，關閉時恢復 `''`。防止主頁進入 rubber-band 狀態導致拖曳手勢被瀏覽器搶奪。
+- **handle（拖曳條）**：`touchstart` 使用 `{ passive: false }` + `e.preventDefault()`。handle 無子互動元素，可安全阻止 overscroll 接管手勢。
+- **header（標題列，含關閉按鈕）**：`touchstart` 使用 `{ passive: false }` **不呼叫** `e.preventDefault()`。若呼叫 `preventDefault`，`touchstart` 事件冒泡至 header 時會取消子元素（關閉按鈕）的後續 `click` 事件，導致按鈕失效。
+
+```js
+handle.addEventListener('touchstart', function(e) { e.preventDefault(); dragStart(e.touches[0].clientY); }, { passive: false });
+hdr.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY); }, { passive: false });
+```
+
+### 個別專案頁日期膠囊導航（`{專案名稱}/index.html`）
+
+- **`e.preventDefault()` on chip/index click**：日期膠囊與側邊索引為 `<a>` 元素，搭配 `html { scroll-behavior: smooth }` 每次點擊會發起原生 anchor smooth scroll。快速連點會堆積多個動畫佇列，導致 iOS Safari 凍結 touch 事件。加 `e.preventDefault()` 後由 JS 統一控制捲動。
+- **中斷並重導向**：`lockNav` 不設點擊守衛（移除 `if (isNavigating) return`）。每次點擊先呼叫 `window.scrollTo({ top: window.scrollY, behavior: 'instant' })` 取消進行中的動畫，再執行新的 `scrollIntoView({ behavior: 'smooth' })`，實現即時響應。
+- **`isNavigating` 旗標**：僅用於擋住 IntersectionObserver（防止捲動中 observer 覆蓋 active highlight），不再阻擋使用者點擊。搭配 `clearTimeout(navTimer)` 避免計時器累積。
+- **月份 Tab 點擊**：呼叫 `window.scrollTo` 前先設 `isNavigating = true`，防止 observer 在捲動回頂部過程中反覆觸發 `scrollIntoView`。

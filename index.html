@@ -449,6 +449,7 @@
       });
       document.getElementById('doc-backdrop').classList.add('open');
       document.getElementById('doc-sheet').classList.add('open');
+      document.body.style.overscrollBehavior = 'none';
     }
 
     function closeDocSheet() {
@@ -457,6 +458,7 @@
       sheet.style.transform = '';
       document.getElementById('doc-backdrop').classList.remove('open');
       sheet.classList.remove('open');
+      document.body.style.overscrollBehavior = '';
       setTimeout(function() {
         document.getElementById('doc-sheet-body').innerHTML = '';
       }, 300);
@@ -496,6 +498,7 @@
       recSheet.style.transition = 'transform 0.3s ease';
       recSheet.style.transform = '';
       recSheet.classList.add('open');
+      document.body.style.overscrollBehavior = 'none';
     }
 
     function closeRecSheet() {
@@ -503,6 +506,7 @@
       recSheet.style.transform = '';
       recBackdrop.classList.remove('open');
       recSheet.classList.remove('open');
+      document.body.style.overscrollBehavior = '';
       setTimeout(function() {
         document.getElementById('rec-frame').src = '';
       }, 300);
@@ -533,8 +537,9 @@
         if (currentDelta >= THRESHOLD) { sheet.style.transform = 'translateY(100%)'; setTimeout(closeDocSheet, 300); }
         else sheet.style.transform = 'translateY(0)';
       }
+      handle.addEventListener('touchstart', function(e) { e.preventDefault(); dragStart(e.touches[0].clientY); }, { passive: false });
+      hdr.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY); }, { passive: false });
       [handle, hdr].forEach(function(el) {
-        el.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY); }, { passive: true });
         el.addEventListener('mousedown', function(e) { dragStart(e.clientY); e.preventDefault(); });
       });
       document.addEventListener('touchmove', function(e) { if (dragging) { e.preventDefault(); dragMove(e.touches[0].clientY); } }, { passive: false });
@@ -567,8 +572,9 @@
         if (currentDelta >= THRESHOLD) { recSheet.style.transform = 'translateY(100%)'; setTimeout(closeRecSheet, 300); }
         else recSheet.style.transform = 'translateY(0)';
       }
+      handle.addEventListener('touchstart', function(e) { e.preventDefault(); dragStart(e.touches[0].clientY); }, { passive: false });
+      hdr.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY); }, { passive: false });
       [handle, hdr].forEach(function(el) {
-        el.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY); }, { passive: true });
         el.addEventListener('mousedown', function(e) { dragStart(e.clientY); e.preventDefault(); });
       });
       document.addEventListener('touchmove', function(e) { if (dragging) { e.preventDefault(); dragMove(e.touches[0].clientY); } }, { passive: false });

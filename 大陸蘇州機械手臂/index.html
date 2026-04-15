@@ -282,6 +282,19 @@
       });
     }
 
+    // 導航鎖（初始鎖定 600ms，防止 observer 覆蓋預設 active 狀態）
+    var isNavigating = true;
+    var navTimer = setTimeout(function() { isNavigating = false; }, 600);
+    function lockNav(href, month) {
+      window.scrollTo({ top: window.scrollY, behavior: 'instant' });
+      syncNav(month, href);
+      isNavigating = true;
+      clearTimeout(navTimer);
+      navTimer = setTimeout(function() { isNavigating = false; }, 600);
+      var target = document.querySelector(href);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    }
+
     tabs.forEach(function(tab) {
       tab.addEventListener('click', function() {
         var month = tab.dataset.month;
@@ -292,23 +305,18 @@
         var firstItem = document.querySelector('.date-index-item[data-month="' + month + '"]');
         var firstHref = firstItem ? firstItem.getAttribute('href') : '';
         syncNav(month, firstHref);
+        isNavigating = true;
+        clearTimeout(navTimer);
+        navTimer = setTimeout(function() { isNavigating = false; }, 800);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
 
-    // 導航鎖（初始鎖定 600ms，防止 observer 覆蓋預設 active 狀態）
-    var isNavigating = true;
-    setTimeout(function() { isNavigating = false; }, 600);
-    function lockNav(href, month) {
-      syncNav(month, href);
-      isNavigating = true;
-      setTimeout(function() { isNavigating = false; }, 900);
-    }
     indexItems.forEach(function(item) {
-      item.addEventListener('click', function() { lockNav(item.getAttribute('href'), item.dataset.month); });
+      item.addEventListener('click', function(e) { e.preventDefault(); lockNav(item.getAttribute('href'), item.dataset.month); });
     });
     chipItems.forEach(function(item) {
-      item.addEventListener('click', function() { lockNav(item.getAttribute('href'), item.dataset.month); });
+      item.addEventListener('click', function(e) { e.preventDefault(); lockNav(item.getAttribute('href'), item.dataset.month); });
     });
 
     // IntersectionObserver
