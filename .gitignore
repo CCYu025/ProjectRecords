@@ -1,3 +1,7 @@
+# 原始照片（JPG/JPEG）— 僅保留轉換後的 WebP
+**/照片/**/*.jpg
+**/照片/**/*.jpeg
+
 # Node.js 依賴
 node_modules/
 package-lock.json
