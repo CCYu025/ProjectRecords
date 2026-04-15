@@ -284,13 +284,16 @@
 
     // 導航鎖（初始鎖定 600ms，防止 observer 覆蓋預設 active 狀態）
     var isNavigating = true;
+    var currentNavHref = null;
     var navTimer = setTimeout(function() { isNavigating = false; }, 600);
     function lockNav(href, month) {
+      if (href === currentNavHref) return;
       window.scrollTo({ top: window.scrollY, behavior: 'instant' });
       syncNav(month, href);
+      currentNavHref = href;
       isNavigating = true;
       clearTimeout(navTimer);
-      navTimer = setTimeout(function() { isNavigating = false; }, 600);
+      navTimer = setTimeout(function() { isNavigating = false; currentNavHref = null; }, 600);
       var target = document.querySelector(href);
       if (target) target.scrollIntoView({ behavior: 'smooth' });
     }

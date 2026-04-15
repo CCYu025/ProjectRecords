@@ -307,7 +307,8 @@ node {專案名稱}/generate_pdf.js
 
 ### 主頁抽屜拖曳關閉（`index.html`）
 
-- **`body` overscroll 鎖定**：抽屜開啟時設 `document.body.style.overscrollBehavior = 'none'`，關閉時恢復 `''`。防止主頁進入 rubber-band 狀態導致拖曳手勢被瀏覽器搶奪。
+- **body + html overflow 鎖定**：抽屜開啟時同時設 `document.documentElement.style.overflow = 'hidden'` 與 `document.body.style.overflow = 'hidden'`，關閉時恢復 `''`。`overscrollBehavior: none` 只防 rubber-band，不阻止 body 正常捲動；iOS Safari 需同時鎖 `html` 才有效。
+- **backdrop `touch-action: none`**：`.doc-backdrop.open` / `.rec-backdrop.open` 加 `touch-action: none`，防止拖曳深色遮罩區域時 body 被捲動。
 - **handle（拖曳條）**：`touchstart` 使用 `{ passive: false }` + `e.preventDefault()`。handle 無子互動元素，可安全阻止 overscroll 接管手勢。
 - **header（標題列，含關閉按鈕）**：`touchstart` 使用 `{ passive: false }` **不呼叫** `e.preventDefault()`。若呼叫 `preventDefault`，`touchstart` 事件冒泡至 header 時會取消子元素（關閉按鈕）的後續 `click` 事件，導致按鈕失效。
 
@@ -319,6 +320,8 @@ hdr.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY)
 ### 個別專案頁日期膠囊導航（`{專案名稱}/index.html`）
 
 - **`e.preventDefault()` on chip/index click**：日期膠囊與側邊索引為 `<a>` 元素，搭配 `html { scroll-behavior: smooth }` 每次點擊會發起原生 anchor smooth scroll。快速連點會堆積多個動畫佇列，導致 iOS Safari 凍結 touch 事件。加 `e.preventDefault()` 後由 JS 統一控制捲動。
-- **中斷並重導向**：`lockNav` 不設點擊守衛（移除 `if (isNavigating) return`）。每次點擊先呼叫 `window.scrollTo({ top: window.scrollY, behavior: 'instant' })` 取消進行中的動畫，再執行新的 `scrollIntoView({ behavior: 'smooth' })`，實現即時響應。
-- **`isNavigating` 旗標**：僅用於擋住 IntersectionObserver（防止捲動中 observer 覆蓋 active highlight），不再阻擋使用者點擊。搭配 `clearTimeout(navTimer)` 避免計時器累積。
+- **中斷並重導向**：`lockNav` 不設點擊守衛。每次點擊先呼叫 `window.scrollTo({ top: window.scrollY, behavior: 'instant' })` 取消進行中的動畫，再執行新的 `scrollIntoView({ behavior: 'smooth' })`，實現即時響應。
+- **同目標忽略**：`currentNavHref` 追蹤當前導航目標。捲動進行中再次點擊相同目標直接 `return`，讓動畫繼續執行到終點。在同一 JS 幀內對同目標連發 instant + smooth 兩個指令，iOS Safari 會靜默丟棄 smooth，導致頁面停在半路。
+- **`isNavigating` 旗標**：僅用於擋住 IntersectionObserver（防止捲動中 observer 覆蓋 active highlight），不再阻擋使用者點擊。搭配 `clearTimeout(navTimer)` 避免計時器累積；600ms 後同時清除 `isNavigating` 與 `currentNavHref`。
 - **月份 Tab 點擊**：呼叫 `window.scrollTo` 前先設 `isNavigating = true`，防止 observer 在捲動回頂部過程中反覆觸發 `scrollIntoView`。
+- **`.doc-sheet-body` `overscroll-behavior: contain`**：捲到邊界時阻斷捲動鏈傳，防止繼續傳至 body。
