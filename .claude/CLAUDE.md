@@ -19,7 +19,7 @@
 ├── index.html                  ← 主頁目錄（所有專案卡片列表）
 ├── assets/
 │   └── logo.png                ← 毅豐 YU FENG logo（主頁與各內頁共用）
-├── package.json                ← Node.js 依賴（playwright）
+├── package.json                ← Node.js 依賴（playwright、sharp）
 ├── node_modules/               ← npm install 產生，勿手動修改
 ├── .claude/
 │   └── CLAUDE.md               ← 本檔案
@@ -28,11 +28,13 @@
     ├── project-info.js         ← 專案資料單一來源（階段、地點、時程、文件）← 必備
     ├── records.js              ← 施工紀錄資料模組（新增紀錄唯一需要修改的檔案）← 必備
     ├── generate_pdf.js         ← PDF 輸出模組（獨立，與 index.html 分離）
+    ├── convert_webp.js         ← JPG → WebP 批次轉換腳本（node convert_webp.js）
     ├── 草稿/                   ← Word 草稿歸檔（生成 HTML 後移入）
     │   └── YYYYMMDD.docx
     ├── 照片/
     │   └── YYYYMMDD/
-    │       └── *.jpg
+    │       ├── *.webp          ← 網頁使用（git 追蹤）
+    │       └── *.jpg           ← 原始檔，本地保留，.gitignore 排除
     └── 專案文件/               ← 可瀏覽的 PDF / 圖檔文件（可依分類建子資料夾）
         └── {分類}/
             └── *.pdf
@@ -262,7 +264,7 @@ renderProject('{專案名稱}', {專案名稱}, 'badge-paused');// 暫停
         {
           desc: '{一句描述，句末含句號}',
           images: [
-            { src: '照片/YYYYMMDD/{檔名}.jpg', alt: '{工作項目名稱}' }
+            { src: '照片/YYYYMMDD/{檔名}.webp', alt: '{工作項目名稱}' }
           ]
         }
         // 一個 task 含多段描述時重複此物件
@@ -274,6 +276,20 @@ renderProject('{專案名稱}', {專案名稱}, 'badge-paused');// 暫停
 ```
 
 > Claude Code 執行新增紀錄任務時，應自動完成 `lastUpdate` 的同步更新，不需使用者另行交代。
+
+### 新增照片（JPG → WebP 轉換）
+
+收到 JPG 照片後的完整流程：
+
+1. 將 JPG 放入 `{專案名稱}/照片/YYYYMMDD/`
+2. 執行轉換（自動掃描所有子資料夾，包含新日期）：
+   ```bash
+   node {專案名稱}/convert_webp.js
+   ```
+3. `records.js` 的圖片路徑填 `.webp`（如 `照片/20260510/IMG_001.webp`）
+4. commit 時 JPG 自動被 `.gitignore` 排除，只推送 `.webp`
+
+**注意：** `.gitignore` 已設定 `**/照片/**/*.jpg`，JPG 永不進入 git。原始 JPG 保留於本地，確認顯示正常後可手動刪除。
 
 ### PDF 輸出
 
