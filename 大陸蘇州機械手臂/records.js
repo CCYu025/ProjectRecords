@@ -191,6 +191,7 @@ function renderRecordsInto(records, basePath, containers) {
               var img = document.createElement('img');
               img.src = basePath + imgData.src;
               img.alt = imgData.alt;
+              img.loading = 'lazy';
               wrapper.appendChild(img);
               imgsEl.appendChild(wrapper);
             });
