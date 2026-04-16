@@ -212,7 +212,7 @@ renderProject('{專案名稱}', {專案名稱}, 'badge-paused');// 暫停
 
 ### 專案紀錄抽屜（方案 B — iframe）
 
-點擊「📋 專案紀錄」→ 90vh 底部抽屜滑出，內部以 `<iframe>` 直接載入內頁。
+點擊「📋 專案紀錄」→ 93vh 底部抽屜滑出，內部以 `<iframe>` 直接載入內頁。
 所有月份 Tab、日期導覽、Lightbox 功能由**內頁自帶**，主頁無需額外渲染邏輯。
 支援拖曳關閉（向下拖 > 120px）與 ESC 關閉。
 
@@ -319,6 +319,7 @@ hdr.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY)
 
 ### 個別專案頁日期膠囊導航（`{專案名稱}/index.html`）
 
+- **開啟預設最新日期**：頁面載入完成後，自動切換到最後一個月份 tab，並以 `instant` scroll 跳轉至該月最後一個 date-group（即最新施工紀錄）。`currentNavHref` 同步設定，防止 IntersectionObserver 覆蓋初始 active 狀態。
 - **`e.preventDefault()` on chip/index click**：日期膠囊與側邊索引為 `<a>` 元素，搭配 `html { scroll-behavior: smooth }` 每次點擊會發起原生 anchor smooth scroll。快速連點會堆積多個動畫佇列，導致 iOS Safari 凍結 touch 事件。加 `e.preventDefault()` 後由 JS 統一控制捲動。
 - **中斷並重導向**：`lockNav` 不設點擊守衛。每次點擊先呼叫 `window.scrollTo({ top: window.scrollY, behavior: 'instant' })` 取消進行中的動畫，再執行新的 `scrollIntoView({ behavior: 'smooth' })`，實現即時響應。
 - **同目標忽略**：`currentNavHref` 追蹤當前導航目標。捲動進行中再次點擊相同目標直接 `return`，讓動畫繼續執行到終點。在同一 JS 幀內對同目標連發 instant + smooth 兩個指令，iOS Safari 會靜默丟棄 smooth，導致頁面停在半路。

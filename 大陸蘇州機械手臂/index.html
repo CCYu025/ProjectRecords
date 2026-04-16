@@ -322,6 +322,32 @@
       item.addEventListener('click', function(e) { e.preventDefault(); lockNav(item.getAttribute('href'), item.dataset.month); });
     });
 
+    // ── 預設顯示最新日期 ──
+    (function() {
+      if (!tabs.length) return;
+      var lastTab = tabs[tabs.length - 1];
+      var lastMonth = lastTab.dataset.month;
+
+      tabs.forEach(function(t) { t.classList.toggle('active', t === lastTab); });
+      sections.forEach(function(s) {
+        s.style.display = s.dataset.month === lastMonth ? '' : 'none';
+      });
+
+      var monthSection = document.querySelector('.month-section[data-month="' + lastMonth + '"]');
+      if (!monthSection) return;
+      var groups = monthSection.querySelectorAll('.date-group[id]');
+      var lastGroup = groups[groups.length - 1];
+      if (!lastGroup) return;
+
+      var lastHref = '#' + lastGroup.id;
+      syncNav(lastMonth, lastHref);
+      currentNavHref = lastHref;
+
+      requestAnimationFrame(function() {
+        lastGroup.scrollIntoView({ behavior: 'instant', block: 'start' });
+      });
+    })();
+
     // IntersectionObserver
     var dateGroups = document.querySelectorAll('.date-group[id]');
     var observer = new IntersectionObserver(function(entries) {
