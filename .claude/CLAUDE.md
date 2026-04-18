@@ -326,3 +326,4 @@ hdr.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientY)
 - **`isNavigating` 旗標**：僅用於擋住 IntersectionObserver（防止捲動中 observer 覆蓋 active highlight），不再阻擋使用者點擊。搭配 `clearTimeout(navTimer)` 避免計時器累積；600ms 後同時清除 `isNavigating` 與 `currentNavHref`。
 - **月份 Tab 點擊**：呼叫 `window.scrollTo` 前先設 `isNavigating = true`，防止 observer 在捲動回頂部過程中反覆觸發 `scrollIntoView`。
 - **`.doc-sheet-body` `overscroll-behavior: contain`**：捲到邊界時阻斷捲動鏈傳，防止繼續傳至 body。
+- **日期膠囊水平置中（`scrollChipToCenter`）**：active chip 切換時（頁面開啟、點擊膠囊、IntersectionObserver 觸發），呼叫 `scrollChipToCenter(chip)` 將 active chip 平滑捲動至 `.date-chips` 容器水平中央。計算公式：`chip.offsetLeft - container.offsetWidth/2 + chip.offsetWidth/2`。**不使用 `scrollIntoView({ inline: 'center' })`**，因為該方法以 viewport 為基準置中，而非容器，在 sticky header 內會產生錯位。桌機（> 1080px）chip 容器為 `display: none`，函式取不到容器直接 return，無副作用。

@@ -282,6 +282,13 @@
       });
     }
 
+    function scrollChipToCenter(chip) {
+      var container = document.querySelector('.date-chips');
+      if (!container || !chip) return;
+      var targetLeft = chip.offsetLeft - (container.offsetWidth / 2) + (chip.offsetWidth / 2);
+      container.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+    }
+
     // 導航鎖（初始鎖定 600ms，防止 observer 覆蓋預設 active 狀態）
     var isNavigating = true;
     var currentNavHref = null;
@@ -290,6 +297,7 @@
       if (href === currentNavHref) return;
       window.scrollTo({ top: window.scrollY, behavior: 'instant' });
       syncNav(month, href);
+      scrollChipToCenter(document.querySelector('.date-chip[href="' + href + '"]'));
       currentNavHref = href;
       isNavigating = true;
       clearTimeout(navTimer);
@@ -345,6 +353,8 @@
 
       requestAnimationFrame(function() {
         lastGroup.scrollIntoView({ behavior: 'instant', block: 'start' });
+        var lastChip = document.querySelector('.date-chip[href="' + lastHref + '"]');
+        scrollChipToCenter(lastChip);
       });
     })();
 
@@ -358,7 +368,7 @@
           var activeMonth = (document.querySelector('.month-tab.active') || {}).dataset.month || '';
           syncNav(activeMonth, href);
           var activeChip = document.querySelector('.date-chip[href="' + href + '"]');
-          if (activeChip) activeChip.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+          scrollChipToCenter(activeChip);
         }
       });
     }, { rootMargin: '-12% 0px -82% 0px' });
